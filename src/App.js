@@ -1,53 +1,61 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
   Link,
 } from "react-router-dom";
+import { createGlobalStyle } from 'styled-components'
+import axios from 'axios'
+
+import Routes from './routes'
+import Nav from './components/Nav'
+import A from './components/A'
+import ScrollNav from './components/ScollNav'
+
+import logo from './assets/logo.png'
+import whats from './assets/whats.png'
+
+const GlobalStyles = createGlobalStyle`
+    *{
+      padding: 0;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    body{
+      font-family: 'Mulish', sans-serif;
+    }
+    .whats{
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      border-radius: 50%;
+    }
+`
 
 function App() {
-  function Home() {
-    return <h2>Home</h2>;
-  }
-  
-  function About() {
-    return <h2>About</h2>;
-  }
-  
-  function Users() {
-    return <h2>Users</h2>;
-  }
+
+  const [tipo, setTipo] = React.useState()
+
+  React.useEffect(() => {
+    const dados = async () => await axios.get('http://localhost:8081/tipos')
+    dados().then(res => setTipo(res.data))
+  }, [])
+
   return (
     <Router>
-      <div className="App">
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
+      <GlobalStyles />
+
+      <a className='whats' href='https://wa.me/5551989424940?text=Oii%20'><img src={whats} width='70' height='70'></img></a>
+      <A link='https://www.instagram.com/direto__do__closet/' txt='@direto_do_closet' />
+      <Nav>
+        <img src={logo}></img>
+        <ScrollNav>
+          <Link to='/'>Tudo</Link>
+          {!tipo && <h3>Loading...</h3>}
+          {!!tipo && tipo.map(e => <Link key={e} to={e}>{e}</Link>)}
+        </ScrollNav>
+      </Nav>
+      <Routes />
     </Router>
   );
 }
-
 export default App;
