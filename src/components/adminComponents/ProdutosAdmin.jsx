@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import styled from 'styled-components'
 
-const Produtos = styled.main`
+const ProdutosAdmin = styled.main`
     @media(max-width: 375px){
         width: auto;
         height: auto;
@@ -29,12 +29,12 @@ const Produtos = styled.main`
 }
 `
 
-function produtos(props) {
+function produtosAdmin(props) {
     return (
-        <Produtos>
+        <ProdutosAdmin>
             {props.children}
-        </Produtos>
+        </ProdutosAdmin>
     )
 }
 
-export default memo(produtos)
+export default memo(produtosAdmin)
