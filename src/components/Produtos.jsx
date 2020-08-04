@@ -26,6 +26,7 @@ const Produtos = styled.main`
         color: black;
         text-decoration: none;
     }
+
 }
 `
 
