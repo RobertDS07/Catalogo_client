@@ -171,7 +171,7 @@ export default function (Routes) {
                     <ProdutoSelecionado>
                         <div className='img'>
                             <img src={e.fotourl} width='200' height='160' />
-                            <form action='http://localhost:8081/admin/delete' method='POST'>
+                            <form className='form' action='http://localhost:8081/admin/delete' method='POST'>
                                 <button type='submit'>X</button>
                                 <input type="hidden" name="token" value={window.localStorage.getItem('authorization')} />
                                 <input type='hidden' name='id' value={e._id} />
@@ -181,7 +181,22 @@ export default function (Routes) {
                             <h2>{e.nome}</h2>
                             <h3 className='margin-top'>{e.descriçao}</h3>
                             <p className='margin-top'>{e.tamanho}</p>
-                            <p className='p'>{e.preço}</p>
+                            <p className='p'>{e.preço}</p><br/>
+                            <form action='http://localhost:8081/admin/update' method='POST'>
+                                <label htmlFor='fotourl'>URL da foto:</label>
+                                <input type='text' name='fotourl' /><br/>
+                                <label htmlFor='nome'>Nome:</label>
+                                <input type='text' name='nome' /><br/>
+                                <label htmlFor='descriçao'>Descrição:</label>
+                                <input type='text' name='descriçao' /><br/>
+                                <label htmlFor='tamanho'>Tamanho:</label>
+                                <input type='text' name='tamanho' /><br/>
+                                <label htmlFor='tipo'>Tipo:</label>
+                                <input type='text' name='tipo' /><br/>
+                                <input type="hidden" name="token" value={window.localStorage.getItem('authorization')} />
+                                <input type='hidden' name='id' value={e._id} />
+                                <button type='submit'>Editar</button>
+                            </form>
                         </div>
                     </ProdutoSelecionado>
                 </Route>

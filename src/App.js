@@ -49,7 +49,9 @@ function App() {
       {window.localStorage.length != 0 && 
         <Modal />
       }
+
       <A link='https://www.instagram.com/direto__do__closet/' txt='@direto_do_closet' />
+
       {window.localStorage.length == 0 &&
         <Nav>
           <img src={logo}></img>
@@ -67,7 +69,7 @@ function App() {
         <Nav>
           <img src={logo}></img>
           <ScrollNav>
-            {/* link para raiz do site */}
+            {/* link para raiz do site ADM*/}
             <Link to='/admin/catalogo'>Tudo</Link>
             {/* setando cada um dos tipos com um link */}
             {!!tipo && tipo.map(e => <Link key={e} to={'/admin/catalogo/' + e}>{e}</Link>)}

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 const Admin = styled.div`
     width: 200px;
@@ -19,7 +19,7 @@ export default function (props) {
 
         const token = async () => await axios.post('http://localhost:8081/auth', {
             user: user,
-            password, password
+            password: password
         })
 
         token().then(res => {

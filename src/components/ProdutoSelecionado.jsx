@@ -28,13 +28,13 @@ const ProdutoSelecionado = styled.main`
             height: 50px;
             border: none;
         }
-        form{
+        .form{
             position: absolute;
             top: 0;
             right: 0;
             text-align: center;
         }
-}
+    }
 `
 
 export default props =>
