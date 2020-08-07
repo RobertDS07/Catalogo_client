@@ -25,14 +25,14 @@ export default function (Routes) {
         getProdutos().then(res => setProdutos(res.data))
     }, [produtos])
 
-    function sort(desc=0, asc=0, tipo=0){
-        if(!!desc){
-            sortLet = {preço: 'DESC'}
+    function sort(desc = 0, asc = 0, tipo = 0) {
+        if (!!desc) {
+            sortLet = { preço: 'DESC' }
         }
-        if(!!asc){
-            sortLet = {preço: 'asc'}
+        if (!!asc) {
+            sortLet = { preço: 'asc' }
         }
-        if(!!tipo){
+        if (!!tipo) {
             sortLet = 'tipo'
         }
         window.localStorage.length === 0 ? setProdutos(null) : setProdutoAdmin(null)
@@ -68,17 +68,17 @@ export default function (Routes) {
         dados().then(res => setTipoAdmin(res.data))
     }, [])
 
-    // função sitada a cima, ela serve para receber cada um dos produtos e organizar onde cada um deve ficar, tornando o processo de tipo/produtos muito mais simples e automatizado
+    // função citada, que serve para receber cada um dos produtos e organizar onde cada um deve ficar, tornando o processo de tipo/produtos muito mais simples e automatizado
     function validateProducts(product, requiredType) {
         //faz a comparação do tipo do produto e dos tipos pegos da linha 25
         if (window.localStorage.length === 0) {
-            if (product.tipo === requiredType.tipo) {
+            if (product.tipo === requiredType) {
                 return (
                     <Link key={product._id} to={'/' + product._id}>
-                        <div>
+                        <div className='content'>
                             <img width='140' height='120' src={product.fotourl}></img>
                             <div className='container'>
-                                <h3>{product.nome}</h3>
+                                <h3>{product.nome}</h3><br />
                                 <h5>{product.preço}</h5>
                             </div>
                         </div>
@@ -87,13 +87,13 @@ export default function (Routes) {
             }
         }
         if (window.localStorage.length !== 0) {
-            if (product.tipo === requiredType.tipo) {
+            if (product.tipo === requiredType) {
                 return (
                     <Link key={product._id} to={'/admin/produto/' + product._id}>
-                        <div>
+                        <div className='content'>
                             <img width='140' height='120' src={product.fotourl}></img>
                             <div className='container'>
-                                <h3>{product.nome}</h3>
+                                <h3>{product.nome}</h3><br />
                                 <h5>{product.preço}</h5>
                             </div>
                         </div>
@@ -111,31 +111,20 @@ export default function (Routes) {
 
             {/* rota raiz da aplicação  */}
             <Route exact path="/">
-                <Produtos produtos={produtos}/>
+                <Produtos produtos={produtos} />
             </Route>
 
             {!!tipo && tipo.map(tipo =>
                 //criando cada rota dinamicante com os tipos disponiveis no DB
-                <Route key={tipo} path={'/' + tipo}>
-                    <Produtos>
-                        {/* enviando os produtos e o tipo para a função lá de cima para ela organizar tudo certinho  */}
-                        {!!produtos && produtos.map(e => validateProducts(e, { tipo }))}
-                    </Produtos>
+                <Route key={tipo} path={'/' + tipo} >
+                    <Produtos tipo={tipo} produtos={produtos} validateProducts={validateProducts} />
                 </Route>
             )}
 
             {/* aqui é onde eu crio as rotas para cada produto dinamicamente, para quando forem clicados o cliente vir para essa rota e ver melhor cada descrição e etc... */}
             {!!produtos && produtos.map(e =>
                 <Route key={e._id} path={'/' + e._id}>
-                    <ProdutoSelecionado produtos={e}>
-                        <img src={e.fotourl} width='200' height='160'></img>
-                        <div>
-                            <h2>{e.nome}</h2>
-                            <h3 className='margin-top'>{e.descriçao}</h3>
-                            <p className='margin-top'>{e.tamanho}</p>
-                            <p className='p'>{e.preço}</p>
-                        </div>
-                    </ProdutoSelecionado>
+                    <ProdutoSelecionado produtos={e} />
                 </Route>
             )}
 
@@ -147,53 +136,20 @@ export default function (Routes) {
             {/* criando a rota do catalogo do admin, onde se a pessoa não estiver logada não conseguira ver  */}
             <Route exact path='/admin/catalogo'>
                 {!produtoAdmin && <h1>Você não está autorizado</h1>}
-                <Produtos produtosAdmin={produtoAdmin}/>
+                <Produtos produtosAdmin={produtoAdmin} />
             </Route>
 
             {!!tipoAdmin && tipoAdmin.map(tipo =>
                 //criando cada rota dinamicante com os tipos disponiveis no DB para o admin
                 <Route key={tipo} path={'/admin/catalogo/' + tipo}>
-                    <Produtos>
-                        {/* enviando os produtos e o tipo para a função lá de cima para ela organizar tudo certinho  */}
-                        {!!produtoAdmin && produtoAdmin.map(e => validateProducts(e, { tipo }))}
-                    </Produtos>
+                    <Produtos produtoAdmin={produtoAdmin} tipoAdmin={tipo} validateProducts={validateProducts} />
                 </Route>
             )}
 
             {/* aqui é onde eu crio as rotas para cada produto dinamicamente, para quando forem clicados o cliente vir para essa rota e ver melhor cada descrição e etc... */}
             {!!produtoAdmin && produtoAdmin.map(e =>
                 <Route key={e._id} path={'/admin/produto/' + e._id}>
-                    <ProdutoSelecionado>
-                        <div className='img'>
-                            <img src={e.fotourl} width='200' height='160' />
-                            <form className='form' action='http://localhost:8081/admin/delete' method='POST'>
-                                <button type='submit'>X</button>
-                                <input type="hidden" name="token" value={window.localStorage.getItem('authorization')} />
-                                <input type='hidden' name='id' value={e._id} />
-                            </form>
-                        </div>
-                        <div>
-                            <h2>{e.nome}</h2>
-                            <h3 className='margin-top'>{e.descriçao}</h3>
-                            <p className='margin-top'>{e.tamanho}</p>
-                            <p className='p'>{e.preço}</p><br/>
-                            <form action='http://localhost:8081/admin/update' method='POST'>
-                                <label htmlFor='fotourl'>URL da foto:</label>
-                                <input type='text' name='fotourl' /><br/>
-                                <label htmlFor='nome'>Nome:</label>
-                                <input type='text' name='nome' /><br/>
-                                <label htmlFor='descriçao'>Descrição:</label>
-                                <input type='text' name='descriçao' /><br/>
-                                <label htmlFor='tamanho'>Tamanho:</label>
-                                <input type='text' name='tamanho' /><br/>
-                                <label htmlFor='tipo'>Tipo:</label>
-                                <input type='text' name='tipo' /><br/>
-                                <input type="hidden" name="token" value={window.localStorage.getItem('authorization')} />
-                                <input type='hidden' name='id' value={e._id} />
-                                <button type='submit'>Editar</button>
-                            </form>
-                        </div>
-                    </ProdutoSelecionado>
+                    <ProdutoSelecionado produtosAdmin={e} />
                 </Route>
             )}
 

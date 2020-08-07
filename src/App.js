@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Link,
 } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components'
 import axios from 'axios'
@@ -13,6 +12,7 @@ import ScrollNav from './components/ScollNav'
 import Modal from './components/adminComponents/Modal'
 
 import whats from './assets/whats.png'
+import logo from './assets/logo.png'
 
 const GlobalStyles = createGlobalStyle`
     *{
@@ -28,6 +28,10 @@ const GlobalStyles = createGlobalStyle`
       right: 0;
       bottom: 0;
       border-radius: 50%;
+    }
+    .logo{
+      position: absolute;
+      left: calc((100% - 65px)/2);
     }
 `
 
@@ -51,11 +55,12 @@ function App() {
           <img src={whats} width='70' height='70' />
         </a>
       }
-      
+
       {window.localStorage.length !== 0 &&
         <Modal />
       }
 
+      <img className='logo' src={logo} />
 
       <Nav>
         {window.localStorage.length == 0 &&
