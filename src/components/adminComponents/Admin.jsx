@@ -11,26 +11,25 @@ const Admin = styled.div`
     justify-content: center;
 `
 
+function login() {
+    const user = document.querySelector('#user').value
+    const password = document.querySelector('#password').value
+
+    const token = async () => await axios.post('http://localhost:8081/auth', {
+        user: user,
+        password: password
+    })
+
+    token().then(res => {
+        res.status === 401 ? console.log(res) : window.localStorage.setItem('authorization', res.data)
+    })
+
+    if(window.localStorage.length !== 0){
+    setTimeout(() => window.location.reload(), 2000) 
+}
+}
 
 export default function (props) {
-    function login() {
-        const user = document.querySelector('#user').value
-        const password = document.querySelector('#password').value
-
-        const token = async () => await axios.post('http://localhost:8081/auth', {
-            user: user,
-            password: password
-        })
-
-        token().then(res => {
-            res.status == 401 ? console.log(res) : window.localStorage.setItem('authorization', res.data)
-        })
-
-        if(window.localStorage.length != 0){
-        window.location.reload()
-    }
-    }
-
     return (
         <Admin>
             <div>

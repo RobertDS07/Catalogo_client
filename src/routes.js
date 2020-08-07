@@ -7,8 +7,11 @@ import axios from 'axios'
 
 import Produtos from './components/Produtos'
 import ProdutoSelecionado from './components/ProdutoSelecionado'
+import Sort from './components/Sort'
 
 import Admin from './components/adminComponents/Admin'
+
+let sortLet = 'tipo'
 
 export default function (Routes) {
 
@@ -16,10 +19,24 @@ export default function (Routes) {
 
     // pegando os itens para a raiz (todos os produtos)
     useEffect(() => {
-        const getProdutos = async () => axios.get('http://localhost:8081/')
-
+        const getProdutos = async () => await axios.post('http://localhost:8081/', {
+            sort: sortLet
+        })
         getProdutos().then(res => setProdutos(res.data))
-    }, [])
+    }, [produtos])
+
+    function sort(desc=0, asc=0, tipo=0){
+        if(!!desc){
+            sortLet = {preço: 'DESC'}
+        }
+        if(!!asc){
+            sortLet = {preço: 'asc'}
+        }
+        if(!!tipo){
+            sortLet = 'tipo'
+        }
+        window.localStorage.length === 0 ? setProdutos(null) : setProdutoAdmin(null)
+    }
 
     const [tipo, setTipo] = React.useState()
 
@@ -35,10 +52,12 @@ export default function (Routes) {
     useEffect(() => {
         //enviando o token para autenticação de admin
         const token = localStorage.getItem('authorization')
-        const getProdutos = async () => await axios.post('http://localhost:8081/admin/', { token: token })
-
+        const getProdutos = async () => await axios.post('http://localhost:8081/admin/', {
+            token: token,
+            sort: sortLet
+        })
         getProdutos().then(res => setProdutoAdmin(res.data))
-    }, [])
+    }, [produtoAdmin])
 
     const [tipoAdmin, setTipoAdmin] = React.useState()
 
@@ -52,8 +71,8 @@ export default function (Routes) {
     // função sitada a cima, ela serve para receber cada um dos produtos e organizar onde cada um deve ficar, tornando o processo de tipo/produtos muito mais simples e automatizado
     function validateProducts(product, requiredType) {
         //faz a comparação do tipo do produto e dos tipos pegos da linha 25
-        if (window.localStorage.length == 0) {
-            if (product.tipo == requiredType.tipo) {
+        if (window.localStorage.length === 0) {
+            if (product.tipo === requiredType.tipo) {
                 return (
                     <Link key={product._id} to={'/' + product._id}>
                         <div>
@@ -67,8 +86,8 @@ export default function (Routes) {
                 )
             }
         }
-        if (window.localStorage.length != 0) {
-            if (product.tipo == requiredType.tipo) {
+        if (window.localStorage.length !== 0) {
+            if (product.tipo === requiredType.tipo) {
                 return (
                     <Link key={product._id} to={'/admin/produto/' + product._id}>
                         <div>
@@ -88,22 +107,11 @@ export default function (Routes) {
         <>
             {!tipo && <h1>Loading...</h1>}
 
+            <Sort function={sort}></Sort>
+
             {/* rota raiz da aplicação  */}
             <Route exact path="/">
-                <Produtos>
-                    {!!produtos && produtos.map(e =>
-                        //para cada produto um novo link, que também sera criado dinamicante
-                        <Link key={e._id} to={'/' + e._id}>
-                            <div>
-                                <img width='140' height='120' src={e.fotourl}></img>
-                                <div className='container'>
-                                    <h3>{e.nome}</h3>
-                                    <h5>{e.preço}</h5>
-                                </div>
-                            </div>
-                        </Link>
-                    )}
-                </Produtos>
+                <Produtos produtos={produtos}/>
             </Route>
 
             {!!tipo && tipo.map(tipo =>
@@ -119,7 +127,7 @@ export default function (Routes) {
             {/* aqui é onde eu crio as rotas para cada produto dinamicamente, para quando forem clicados o cliente vir para essa rota e ver melhor cada descrição e etc... */}
             {!!produtos && produtos.map(e =>
                 <Route key={e._id} path={'/' + e._id}>
-                    <ProdutoSelecionado>
+                    <ProdutoSelecionado produtos={e}>
                         <img src={e.fotourl} width='200' height='160'></img>
                         <div>
                             <h2>{e.nome}</h2>
@@ -139,20 +147,7 @@ export default function (Routes) {
             {/* criando a rota do catalogo do admin, onde se a pessoa não estiver logada não conseguira ver  */}
             <Route exact path='/admin/catalogo'>
                 {!produtoAdmin && <h1>Você não está autorizado</h1>}
-                <Produtos>
-                    {/* faz basicamente a mesma coisa da rota raiz do site, diferença apenas que pode excluir, adicionar e mudar itens disponiveis  */}
-                    {!!produtoAdmin && produtoAdmin.map(e =>
-                        <Link key={e._id} to={'/admin/produto/' + e._id}>
-                            <div>
-                                <img width='140' height='120' src={e.fotourl} />
-                                <div className='container'>
-                                    <h3>{e.nome}</h3>
-                                    <h5>{e.preço}</h5>
-                                </div>
-                            </div>
-                        </Link>
-                    )}
-                </Produtos>
+                <Produtos produtosAdmin={produtoAdmin}/>
             </Route>
 
             {!!tipoAdmin && tipoAdmin.map(tipo =>
@@ -200,8 +195,7 @@ export default function (Routes) {
                         </div>
                     </ProdutoSelecionado>
                 </Route>
-            )
-            }
+            )}
 
         </>
     )

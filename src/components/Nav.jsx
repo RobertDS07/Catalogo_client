@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import logo from '../assets/logo.png'
 
 const Nav = styled.nav`
     @media(max-width: 375px){
@@ -16,4 +17,7 @@ const Nav = styled.nav`
 `
 
 export default props =>
-    <Nav>{props.children}</Nav>
+    <Nav>
+        <img src={logo}></img>
+        {props.children}
+    </Nav>
