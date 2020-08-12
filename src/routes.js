@@ -8,29 +8,38 @@ import axios from 'axios'
 import Produtos from './components/Produtos'
 import ProdutoSelecionado from './components/ProdutoSelecionado'
 import Sort from './components/Sort'
+import Nav from './components/Nav'
+import A from './components/A'
+import ScrollNav from './components/ScollNav'
+import NavResponsive from './components/NavResponsive';
 
+import Modal from './components/adminComponents/Modal'
 import Admin from './components/adminComponents/Admin'
+
+import whats from './assets/whats.png'
+import logo from './assets/logo.png'
+import arrowUp from './assets/arrowUp.png'
 
 let sortLet = 'tipo'
 
-export default function (Routes) {
+export default function () {
 
     const [produtos, setProdutos] = useState()
 
     // pegando os itens para a raiz (todos os produtos)
     useEffect(() => {
         const getProdutos = async () => await axios.post('http://localhost:8081/', {
-            sort: sortLet
+            sort: sortLet,
         })
         getProdutos().then(res => setProdutos(res.data))
-    }, [produtos])
+    }, [sortLet])
 
     function sort(desc = 0, asc = 0, tipo = 0) {
         if (!!desc) {
-            sortLet = { preço: 'DESC' }
+            sortLet = {'preço' : 'desc'}
         }
         if (!!asc) {
-            sortLet = { preço: 'asc' }
+            sortLet = { 'preço': 'asc' }
         }
         if (!!tipo) {
             sortLet = 'tipo'
@@ -57,7 +66,7 @@ export default function (Routes) {
             sort: sortLet
         })
         getProdutos().then(res => setProdutoAdmin(res.data))
-    }, [produtoAdmin])
+    }, [sortLet])
 
     const [tipoAdmin, setTipoAdmin] = React.useState()
 
@@ -103,11 +112,53 @@ export default function (Routes) {
         }
     }
 
+    const [responsive, setResponsive] = useState(false)
+    window.addEventListener('load', () => window.innerWidth < 1400 ? setResponsive(false) : setResponsive(true))
+    window.addEventListener('resize', () => window.innerWidth < 1400 ? setResponsive(false) : setResponsive(true))
+
     return (
         <>
             {!tipo && <h1>Loading...</h1>}
 
-            <Sort function={sort}></Sort>
+            <A link='https://www.instagram.com/direto__do__closet/' txt='@direto_do_closet' />
+
+            {window.localStorage.length === 0 && window.innerWidth < 1400 &&
+                <a className='whats' href='https://wa.me/5551989424940?text=Oii%20'>
+                    <img src={whats} width='70' height='70' />
+                </a>
+            }
+
+            {window.innerWidth > 1400 &&
+                <img className='arrowUp' src={arrowUp} width='50' height='50' onClick={() => console.log(window.scrollTo(0, 0))} />
+            }
+
+            {window.localStorage.length !== 0 &&
+                <Modal />
+            }
+
+            <img className='logo' src={logo} />
+
+            {!responsive &&
+                <>
+                    <Nav>
+                        {window.localStorage.length == 0 &&
+                            <ScrollNav tipo={tipo} />
+                        }
+                        {window.localStorage.length != 0 &&
+                            <ScrollNav tipoAdmin={tipoAdmin} />
+                        }
+                    </Nav>
+
+                    <Sort function={sort}></Sort>
+                </>
+            }
+
+            {responsive && window.localStorage.length == 0 &&
+                <NavResponsive tipo={tipo} sort={sort} />
+            }
+            {responsive && window.localStorage.length!= 0 && 
+                <NavResponsive tipoAdmin={tipoAdmin} sort={sort} />
+            }
 
             {/* rota raiz da aplicação  */}
             <Route exact path="/">

@@ -6,6 +6,7 @@ const ProdutoSelecionado = styled.main`
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
         margin: 20px;
 
         img{
@@ -35,13 +36,21 @@ const ProdutoSelecionado = styled.main`
             right: 0;
             text-align: center;
         }
+        @media(min-width: 1400px) {
+            grid-area: main;
+        }
 `
 
 export default props =>
     <ProdutoSelecionado>
         {!props.produtosAdmin && !!props.produtos &&
             <>
-                <img src={props.produtos.fotourl} width='200' height='160' />
+                {window.innerWidth < 1400 &&
+                    <img src={props.produtos.fotourl} width='200' height='160' />
+                }
+                {window.innerWidth > 1400 &&
+                    <img src={props.produtos.fotourl} width='500' height='460' />
+                }
                 <div>
                     <h2>{props.produtos.nome}</h2>
                     <h3 className='margin-top'>{props.produtos.descriçao}</h3>
@@ -54,7 +63,12 @@ export default props =>
         {!!props.produtosAdmin &&
             <>
                 <div className='img'>
-                    <img src={props.produtosAdmin.fotourl} width='500' height='440' />
+                    {window.innerWidth < 1400 &&
+                        <img src={props.produtosAdmin.fotourl} width='200' height='160' />
+                    }
+                    {window.innerWidth > 1400 &&
+                        <img src={props.produtosAdmin.fotourl} width='500' height='460' />
+                    }
                     <form className='form' action='http://localhost:8081/admin/delete' method='POST'>
                         <button type='submit'>X</button>
                         <input type="hidden" name="token" value={window.localStorage.getItem('authorization')} />
@@ -71,6 +85,8 @@ export default props =>
                         <input type='text' name='fotourl' /><br />
                         <label htmlFor='nome'>Nome:</label>
                         <input type='text' name='nome' /><br />
+                        <label htmlFor='preço'>Preço:</label>
+                        <input type='text' name='preço' /><br />
                         <label htmlFor='descriçao'>Descrição:</label>
                         <input type='text' name='descriçao' /><br />
                         <label htmlFor='tamanho'>Tamanho:</label>

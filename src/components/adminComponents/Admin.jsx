@@ -18,6 +18,9 @@ const Admin = styled.div`
         justify-content: center;
         flex-direction: column;
     }
+    @media(min-width: 1400px){
+            grid-area: main;
+    }
 `
 
 function login() {
@@ -32,6 +35,9 @@ function login() {
     token().then(res => {
         res.status === 401 ? console.log(res) : window.localStorage.setItem('authorization', res.data)
     })
+    return (
+        <Redirect to='/admin/catalogo'/>
+    )
 }
 
 export default function (props) {

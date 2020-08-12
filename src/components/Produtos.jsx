@@ -129,6 +129,19 @@ const Produtos = styled.main`
         align-items: center;
     }
 }
+@media(min-width: 1400px) {
+    grid-area: main;
+    display: inline-block;
+    .catchContent{
+        width: auto;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+}
 `
 
 function produtos(props) {
@@ -143,7 +156,7 @@ function produtos(props) {
                             <img width='140' height='120' src={e.fotourl}></img>
                             <div className='container'>
                                 <h3>{e.nome}</h3><br />
-                                <h5>{e.preço}</h5>
+                                <h5>R$ {e.preço}</h5>
                             </div>
                         </div>
                     </Link>
@@ -158,7 +171,7 @@ function produtos(props) {
                             <img width='140' height='120' src={e.fotourl} />
                             <div className='container'>
                                 <h3>{e.nome}</h3><br />
-                                <h5>{e.preço}</h5>
+                                <h5>R$ {e.preço}</h5>
                             </div>
                         </div>
                     </Link>

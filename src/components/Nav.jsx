@@ -7,13 +7,12 @@ const Nav = styled.nav`
         display: flex;
         position: relative;
 
-        img{
-            position: absolute;
-            left: calc((100% - 65px)/2);
+        @media(min-width: 1400px){
+            grid-area: nav;
         }
 `
 
 export default props =>
-        <Nav>
-            {props.children}
-        </Nav>
+    <Nav>
+        {props.children}
+    </Nav>

@@ -12,6 +12,14 @@ const A = styled.div`
         color: grey;
         text-decoration: none;
     }
+    @media(min-width: 1400px){
+        grid-area: cabeçalho;
+        height: 2px;
+        margin-top: auto;
+        a{
+            color: #E4E6E8;
+        }
+    }
 `
 
 export default props =>
