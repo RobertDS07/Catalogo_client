@@ -20,8 +20,9 @@ const ScrollNav = styled.div`
         margin-bottom: 2px;
     }
     h3{
-        margin: 0 0 2px 3px;
         color: #89750c;
+        float: left;
+        padding-top: 2px;
     }
     a {
         color: grey;
@@ -46,6 +47,12 @@ const ScrollNav = styled.div`
         position: relative;
         flex-direction: column;
     }
+    input{
+        border: none;
+        outline: none;
+        padding: 7px;
+        font-size: 16px;
+    }
 `
 
 export default props => {
@@ -53,11 +60,11 @@ export default props => {
 
     return (
         <ScrollNav>
+            {!searchArea && <img src={search} width='16' height='16' onClick={() => setSearchArea(true)} />}
+            {searchArea && <h3 onClick={() => setSearchArea(false)}>X</h3>}
+            {searchArea && <input type='text' placeholder='O que você procura?' onChange={e => props.searchFunction(e.target.value)} ></input>}
+            
             {/* esse onclick aqui é uma baita de uma gambiarra eu juro que arrumo isso alguma hora me desculpem */}
-            {!props.tipoAdmin && !searchArea && <img src={search} width='16' height='16' onClick={() => setSearchArea(true)} />}
-
-            {!props.tipoAdmin && searchArea && <h3 onClick={() => setSearchArea(false)}>X</h3>}
-
             {/* link para raiz do site  */}
             {!props.tipoAdmin && !searchArea && <Link to='/' onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo' }}>Tudo</Link>}
 

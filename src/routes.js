@@ -31,12 +31,13 @@ export default function () {
         const getProdutos = async () => await axios.post('http://localhost:8081/', {
             sort: sortLet,
         })
+
         getProdutos().then(res => setProdutos(res.data))
     }, [sortLet])
 
     function sort(desc = 0, asc = 0, tipo = 0) {
         if (!!desc) {
-            sortLet = {'preço' : 'desc'}
+            sortLet = { 'preço': 'desc' }
         }
         if (!!asc) {
             sortLet = { 'preço': 'asc' }
@@ -78,10 +79,17 @@ export default function () {
     }, [])
 
     // função citada, que serve para receber cada um dos produtos e organizar onde cada um deve ficar, tornando o processo de tipo/produtos muito mais simples e automatizado
+    let actualType = 'Categoria'
     function validateProducts(product, requiredType) {
         //faz a comparação do tipo do produto e dos tipos pegos da linha 25
         if (window.localStorage.length === 0) {
             if (product.tipo === requiredType) {
+                actualType = requiredType
+                if (actualType !== requiredType) {
+                    clearProdctsToSearch()
+                } else {
+                    prodctsToSearch.includes(product) ? console.log() : prodctsToSearch.push(product)
+                }
                 return (
                     <Link key={product._id} to={'/' + product._id}>
                         <div className='content'>
@@ -108,6 +116,37 @@ export default function () {
                         </div>
                     </Link>
                 )
+            }
+        }
+    }
+
+    const [productsSearch, setProductsSearch] = useState(false)
+    const prodctsToSearch = []
+    function clearProdctsToSearch() {
+        prodctsToSearch.length = 0
+        console.log(prodctsToSearch);
+    }
+
+    function searchFunction(text) {
+        if (prodctsToSearch.length <= 0) {
+            if (text !== '' && text !== null && text !== undefined) {
+                setProductsSearch(produtos.filter(e => {
+                    if (e.nome.toLowerCase().includes(text.toLowerCase())) {
+                        return e
+                    }
+                }))
+            } else {
+                setProductsSearch(false)
+            }
+        } else {
+            if (text !== '' && text !== null && text !== undefined) {
+                setProductsSearch(prodctsToSearch.filter(e => {
+                    if (e.nome.toLowerCase().includes(text.toLowerCase())) {
+                        return e
+                    }
+                }))
+            } else {
+                setProductsSearch(false)
             }
         }
     }
@@ -142,7 +181,7 @@ export default function () {
                 <>
                     <Nav>
                         {window.localStorage.length == 0 &&
-                            <ScrollNav tipo={tipo} />
+                            <ScrollNav searchFunction={searchFunction} tipo={tipo} />
                         }
                         {window.localStorage.length != 0 &&
                             <ScrollNav tipoAdmin={tipoAdmin} />
@@ -156,19 +195,21 @@ export default function () {
             {responsive && window.localStorage.length == 0 &&
                 <NavResponsive tipo={tipo} sort={sort} />
             }
-            {responsive && window.localStorage.length!= 0 && 
+            {responsive && window.localStorage.length != 0 &&
                 <NavResponsive tipoAdmin={tipoAdmin} sort={sort} />
             }
 
             {/* rota raiz da aplicação  */}
             <Route exact path="/">
-                <Produtos produtos={produtos} />
+                {!productsSearch && <Produtos produtos={produtos} clearProdctsToSearch={clearProdctsToSearch} />}
+                {!!productsSearch && <Produtos search={productsSearch} clearProdctsToSearch={clearProdctsToSearch} />}
             </Route>
 
             {!!tipo && tipo.map(tipo =>
                 //criando cada rota dinamicante com os tipos disponiveis no DB
                 <Route key={tipo} path={'/' + tipo} >
-                    <Produtos tipo={tipo} produtos={produtos} validateProducts={validateProducts} />
+                    {!productsSearch && <Produtos tipo={tipo} clearProdctsToSearch={clearProdctsToSearch} produtos={produtos} validateProducts={validateProducts} />}
+                    {!!productsSearch && <Produtos tipo={tipo} search2={productsSearch} validateProducts={validateProducts} />}
                 </Route>
             )}
 

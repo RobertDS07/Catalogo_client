@@ -145,11 +145,12 @@ const Produtos = styled.main`
 `
 
 function produtos(props) {
-
+    // !props.validateProducts ? props.clearProdctsToSearch() : console.log()
+    console.log(props.search2, props.search)
     return (
         <Produtos>
             <div className='catchContent'>
-                {!props.tipo && !props.produtosAdmin && !!props.produtos && props.produtos.map(e =>
+                {!props.tipo && !props.produtosAdmin && !props.search && !!props.produtos && props.produtos.map(e =>
                     //para cada produto um novo link, que também sera criado dinamicante
                     <Link key={e._id} to={'/' + e._id}>
                         <div className='content'>
@@ -161,14 +162,29 @@ function produtos(props) {
                         </div>
                     </Link>
                 )}
+
+                {!props.produtosAdmin && !props.tipo && !!props.search && props.search.map(e =>
+                    //para cada produto um novo link, que também sera criado dinamicante
+                    <Link key={e._id} to={'/' + e._id}>
+                        <div className='content'>
+                            <img width='140' height='120' src={e.fotourl}></img>
+                            <div className='container'>
+                                <h3>{e.nome}</h3><br />
+                                <h5>R$ {e.preço}</h5>
+                            </div>
+                        </div>
+                    </Link>
+                )}
+
                 {/* essa parte pode realmente ter ficado dificil de entender, mas vou tentar explicar, estou pegando e validando primeiramente se aqui eu estou passando o props.tipo que ta sendo passado la do routes, esse tipo é o tipo que o cliente está, PS: como tipo entendam categoria... Com o tipo em mãos eu simplesmente peguei a função de validar produtos e taquei todos os produtos pra lá junto com a categoria que o cliente deseja, desse jeito me retornando apenas os produtos do tipo desejado */}
-                {!props.produtosAdmin && !!props.produtos && !!props.tipo && !!props.validateProducts && props.produtos.map(produto => props.validateProducts(produto, props.tipo))}
+                {!props.produtosAdmin && !!props.produtos && !props.search2 && !!props.tipo && !!props.validateProducts && props.produtos.map(produto => props.validateProducts(produto, props.tipo))}
+                {!props.produtosAdmin && !!props.search2 && !props.produtos && !!props.tipo && !!props.validateProducts && props.search2.map(produto => props.validateProducts(produto, props.tipo))}
 
                 {/* faz basicamente a mesma coisa da rota raiz do site, diferença apenas que pode excluir, adicionar e mudar itens disponiveis  */}
                 {!!props.produtosAdmin && props.produtosAdmin.map(e =>
                     <Link key={e._id} to={'/admin/produto/' + e._id}>
                         <div className='content'>
-                            <img width='140' height='120' src={e.fotourl} />
+                            <img width='130' height='173' src={e.fotourl} />
                             <div className='container'>
                                 <h3>{e.nome}</h3><br />
                                 <h5>R$ {e.preço}</h5>

@@ -64,7 +64,7 @@ export default props =>
             <>
                 <div className='img'>
                     {window.innerWidth < 1400 &&
-                        <img src={props.produtosAdmin.fotourl} width='200' height='160' />
+                        <img src={props.produtosAdmin.fotourl} width='300' height='400' />
                     }
                     {window.innerWidth > 1400 &&
                         <img src={props.produtosAdmin.fotourl} width='500' height='460' />
