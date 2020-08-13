@@ -42,6 +42,14 @@ const GlobalStyles = createGlobalStyle`
       "cabeçalho cabeçalho cabeçalho cabeçalho"
       "nothing nav main morenothing";
     }
+    .search{
+      grid-column-start: 2;
+      grid-row: 1;
+      margin: 36px;
+      width: 183px;
+      height: 20px;
+      border: none;
+    }
 `
 
 window.addEventListener('load', () => {

@@ -145,8 +145,6 @@ const Produtos = styled.main`
 `
 
 function produtos(props) {
-    // !props.validateProducts ? props.clearProdctsToSearch() : console.log()
-    console.log(props.search2, props.search)
     return (
         <Produtos>
             <div className='catchContent'>
@@ -154,7 +152,7 @@ function produtos(props) {
                     //para cada produto um novo link, que também sera criado dinamicante
                     <Link key={e._id} to={'/' + e._id}>
                         <div className='content'>
-                            <img width='140' height='120' src={e.fotourl}></img>
+                            <img width='130' height='173' src={e.fotourl}></img>
                             <div className='container'>
                                 <h3>{e.nome}</h3><br />
                                 <h5>R$ {e.preço}</h5>
@@ -167,7 +165,7 @@ function produtos(props) {
                     //para cada produto um novo link, que também sera criado dinamicante
                     <Link key={e._id} to={'/' + e._id}>
                         <div className='content'>
-                            <img width='140' height='120' src={e.fotourl}></img>
+                            <img width='130' height='173' src={e.fotourl}></img>
                             <div className='container'>
                                 <h3>{e.nome}</h3><br />
                                 <h5>R$ {e.preço}</h5>
@@ -177,11 +175,11 @@ function produtos(props) {
                 )}
 
                 {/* essa parte pode realmente ter ficado dificil de entender, mas vou tentar explicar, estou pegando e validando primeiramente se aqui eu estou passando o props.tipo que ta sendo passado la do routes, esse tipo é o tipo que o cliente está, PS: como tipo entendam categoria... Com o tipo em mãos eu simplesmente peguei a função de validar produtos e taquei todos os produtos pra lá junto com a categoria que o cliente deseja, desse jeito me retornando apenas os produtos do tipo desejado */}
-                {!props.produtosAdmin && !!props.produtos && !props.search2 && !!props.tipo && !!props.validateProducts && props.produtos.map(produto => props.validateProducts(produto, props.tipo))}
-                {!props.produtosAdmin && !!props.search2 && !props.produtos && !!props.tipo && !!props.validateProducts && props.search2.map(produto => props.validateProducts(produto, props.tipo))}
+                {!props.produtosAdmin && !!props.produtos && !props.search && !!props.tipo && !!props.validateProducts && props.produtos.map(produto => props.validateProducts(produto, props.tipo))}
+                {!props.produtosAdmin && !props.searchAdmin && !!props.search && !props.produtos && !!props.tipo && !!props.validateProducts && props.search.map(produto => props.validateProducts(produto, props.tipo))}
 
                 {/* faz basicamente a mesma coisa da rota raiz do site, diferença apenas que pode excluir, adicionar e mudar itens disponiveis  */}
-                {!!props.produtosAdmin && props.produtosAdmin.map(e =>
+                {!!props.produtosAdmin && !props.searchAdmin && !props.tipoAdmin && props.produtosAdmin.map(e =>
                     <Link key={e._id} to={'/admin/produto/' + e._id}>
                         <div className='content'>
                             <img width='130' height='173' src={e.fotourl} />
@@ -192,7 +190,21 @@ function produtos(props) {
                         </div>
                     </Link>
                 )}
-                {!!props.produtoAdmin && !!props.tipoAdmin && !!props.validateProducts && props.produtoAdmin.map(produto => props.validateProducts(produto, props.tipoAdmin))}
+
+                {!props.produtosAdmin && !props.tipoAdmin && !!props.searchAdmin && props.searchAdmin.map(e =>
+                    //para cada produto um novo link, que também sera criado dinamicante
+                    <Link key={e._id} to={'/' + e._id}>
+                        <div className='content'>
+                            <img width='130' height='173' src={e.fotourl}></img>
+                            <div className='container'>
+                                <h3>{e.nome}</h3><br />
+                                <h5>R$ {e.preço}</h5>
+                            </div>
+                        </div>
+                    </Link>
+                )}
+                {!props.searchAdmin && !!props.produtoAdmin && !!props.tipoAdmin && !!props.validateProducts && props.produtoAdmin.map(produto => props.validateProducts(produto, props.tipoAdmin))}
+                {!!props.searchAdmin && !props.produtoAdmin && !!props.tipoAdmin && !!props.validateProducts && props.searchAdmin.map(produto => props.validateProducts(produto, props.tipoAdmin))}
             </div>
         </Produtos>
     )

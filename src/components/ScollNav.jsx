@@ -61,7 +61,7 @@ export default props => {
     return (
         <ScrollNav>
             {!searchArea && <img src={search} width='16' height='16' onClick={() => setSearchArea(true)} />}
-            {searchArea && <h3 onClick={() => setSearchArea(false)}>X</h3>}
+            {searchArea && <h3 onClick={() => {setSearchArea(false); props.searchFunction(null)}}>X</h3>}
             {searchArea && <input type='text' placeholder='O que você procura?' onChange={e => props.searchFunction(e.target.value)} ></input>}
             
             {/* esse onclick aqui é uma baita de uma gambiarra eu juro que arrumo isso alguma hora me desculpem */}
@@ -72,10 +72,10 @@ export default props => {
             {!!props.tipo && !searchArea && props.tipo.map(e => <Link key={e} onClick={() => { document.querySelector('.sort').children[0].innerHTML = e }} to={e}>{e}</Link>)}
 
             {/* link para raiz do site ADM*/}
-            {!!props.tipoAdmin && <Link to='/admin/catalogo'>Tudo</Link>}
+            {!!props.tipoAdmin && !searchArea && <Link onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo' }} to='/admin/catalogo'>Tudo</Link>}
 
             {/* setando cada um dos tipos com um link */}
-            {!!props.tipoAdmin && props.tipoAdmin.map(e => <Link key={e} to={'/admin/catalogo/' + e}>{e}</Link>)}
+            {!!props.tipoAdmin && !searchArea && props.tipoAdmin.map(e => <Link key={e} onClick={() => { document.querySelector('.sort').children[0].innerHTML = e }} to={'/admin/catalogo/' + e}>{e}</Link>)}
         </ScrollNav>
     )
 }

@@ -79,17 +79,11 @@ export default function () {
     }, [])
 
     // função citada, que serve para receber cada um dos produtos e organizar onde cada um deve ficar, tornando o processo de tipo/produtos muito mais simples e automatizado
-    let actualType = 'Categoria'
     function validateProducts(product, requiredType) {
         //faz a comparação do tipo do produto e dos tipos pegos da linha 25
         if (window.localStorage.length === 0) {
             if (product.tipo === requiredType) {
-                actualType = requiredType
-                if (actualType !== requiredType) {
-                    clearProdctsToSearch()
-                } else {
-                    prodctsToSearch.includes(product) ? console.log() : prodctsToSearch.push(product)
-                }
+                //  Aqui to pegando todos os produtos que passarem pela validação para poder usar para search do client, como explico algumas linhas mais para baixo 
                 return (
                     <Link key={product._id} to={'/' + product._id}>
                         <div className='content'>
@@ -120,34 +114,18 @@ export default function () {
         }
     }
 
+    // esse productsSearch serão os produtos que eu irei passar para dentro do componente quando houver um chamado de search
     const [productsSearch, setProductsSearch] = useState(false)
-    const prodctsToSearch = []
-    function clearProdctsToSearch() {
-        prodctsToSearch.length = 0
-        console.log(prodctsToSearch);
-    }
-
+    // função feita para o search do usuario, onde ele da um .filtter nos produtos
     function searchFunction(text) {
-        if (prodctsToSearch.length <= 0) {
-            if (text !== '' && text !== null && text !== undefined) {
-                setProductsSearch(produtos.filter(e => {
-                    if (e.nome.toLowerCase().includes(text.toLowerCase())) {
-                        return e
-                    }
-                }))
-            } else {
-                setProductsSearch(false)
-            }
+        if (text !== '' && text !== null && text !== undefined) {
+            setProductsSearch(produtos.filter(e => {
+                if (e.nome.toLowerCase().includes(text.toLowerCase())) {
+                    return e
+                }
+            }))
         } else {
-            if (text !== '' && text !== null && text !== undefined) {
-                setProductsSearch(prodctsToSearch.filter(e => {
-                    if (e.nome.toLowerCase().includes(text.toLowerCase())) {
-                        return e
-                    }
-                }))
-            } else {
-                setProductsSearch(false)
-            }
+            setProductsSearch(false)
         }
     }
 
@@ -180,11 +158,11 @@ export default function () {
             {!responsive &&
                 <>
                     <Nav>
-                        {window.localStorage.length == 0 &&
+                        {window.localStorage.length === 0 &&
                             <ScrollNav searchFunction={searchFunction} tipo={tipo} />
                         }
-                        {window.localStorage.length != 0 &&
-                            <ScrollNav tipoAdmin={tipoAdmin} />
+                        {window.localStorage.length !== 0 &&
+                            <ScrollNav searchFunction={searchFunction} tipoAdmin={tipoAdmin} />
                         }
                     </Nav>
 
@@ -193,23 +171,23 @@ export default function () {
             }
 
             {responsive && window.localStorage.length == 0 &&
-                <NavResponsive tipo={tipo} sort={sort} />
+                <NavResponsive tipo={tipo} searchFunction={searchFunction} sort={sort} />
             }
             {responsive && window.localStorage.length != 0 &&
-                <NavResponsive tipoAdmin={tipoAdmin} sort={sort} />
+                <NavResponsive tipoAdmin={tipoAdmin} searchFunction={searchFunction} sort={sort} />
             }
 
             {/* rota raiz da aplicação  */}
             <Route exact path="/">
-                {!productsSearch && <Produtos produtos={produtos} clearProdctsToSearch={clearProdctsToSearch} />}
-                {!!productsSearch && <Produtos search={productsSearch} clearProdctsToSearch={clearProdctsToSearch} />}
+                {!productsSearch && <Produtos produtos={produtos} />}
+                {!!productsSearch && <Produtos search={productsSearch} />}
             </Route>
 
             {!!tipo && tipo.map(tipo =>
                 //criando cada rota dinamicante com os tipos disponiveis no DB
                 <Route key={tipo} path={'/' + tipo} >
-                    {!productsSearch && <Produtos tipo={tipo} clearProdctsToSearch={clearProdctsToSearch} produtos={produtos} validateProducts={validateProducts} />}
-                    {!!productsSearch && <Produtos tipo={tipo} search2={productsSearch} validateProducts={validateProducts} />}
+                    {!productsSearch && <Produtos tipo={tipo} produtos={produtos} validateProducts={validateProducts} />}
+                    {!!productsSearch && <Produtos tipo={tipo} search={productsSearch} validateProducts={validateProducts} />}
                 </Route>
             )}
 
@@ -228,13 +206,16 @@ export default function () {
             {/* criando a rota do catalogo do admin, onde se a pessoa não estiver logada não conseguira ver  */}
             <Route exact path='/admin/catalogo'>
                 {!produtoAdmin && <h1>Você não está autorizado</h1>}
-                <Produtos produtosAdmin={produtoAdmin} />
+                {!productsSearch && <Produtos produtosAdmin={produtoAdmin} />}
+                {!!productsSearch && <Produtos searchAdmin={productsSearch} />}
+                {/* <Produtos produtosAdmin={produtoAdmin} /> */}
             </Route>
 
             {!!tipoAdmin && tipoAdmin.map(tipo =>
                 //criando cada rota dinamicante com os tipos disponiveis no DB para o admin
                 <Route key={tipo} path={'/admin/catalogo/' + tipo}>
-                    <Produtos produtoAdmin={produtoAdmin} tipoAdmin={tipo} validateProducts={validateProducts} />
+                    {!productsSearch && <Produtos produtoAdmin={produtoAdmin} tipoAdmin={tipo} validateProducts={validateProducts} />}
+                    {!!productsSearch && <Produtos tipoAdmin={tipo} searchAdmin={productsSearch} validateProducts={validateProducts} />}
                 </Route>
             )}
 
