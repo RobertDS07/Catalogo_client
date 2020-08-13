@@ -11,7 +11,7 @@ const Nav = styled.nav`
             grid-area: nav;
         }
 `
-
+// Acho muito ridiculo esse componente Juro que um dia vou arrumar me desculpem!
 export default props =>
     <Nav>
         {props.children}

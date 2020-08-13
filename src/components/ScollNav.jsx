@@ -60,11 +60,12 @@ export default props => {
 
     return (
         <ScrollNav>
-            {!searchArea && <img src={search} width='16' height='16' onClick={() => setSearchArea(true)} />}
+            {/* aqui é onde eu trato o search do usuario, onde sempre que o usuario fechar o input ele ira retornar para a função de search null, e desse modo ira cair na condição para setar o productsSearch como false, assim o componente Produtos volta a exibir os produtos default  */}
+            {!searchArea && <img src={search} alt='Search' width='16' height='16' onClick={() => setSearchArea(true)} />}
             {searchArea && <h3 onClick={() => {setSearchArea(false); props.searchFunction(null)}}>X</h3>}
             {searchArea && <input type='text' placeholder='O que você procura?' onChange={e => props.searchFunction(e.target.value)} ></input>}
             
-            {/* esse onclick aqui é uma baita de uma gambiarra eu juro que arrumo isso alguma hora me desculpem */}
+            {/* esse onclick aqui é uma baita de uma gambiarra para estética do site, eu juro que arrumo isso alguma hora me desculpem */}
             {/* link para raiz do site  */}
             {!props.tipoAdmin && !searchArea && <Link to='/' onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo' }}>Tudo</Link>}
 

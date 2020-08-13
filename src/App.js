@@ -1,10 +1,13 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  BrowserRouter as Router
 } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components'
 
+//puxando o Routes para renderizar os componentes que serão modificados de acordo com a rota
 import Routes from './routes'
+
+import search from './assets/search.png'
 
 const GlobalStyles = createGlobalStyle`
     *{
@@ -15,6 +18,9 @@ const GlobalStyles = createGlobalStyle`
     }
     body{
       font-family: 'Mulish', sans-serif;
+    }
+    #root{
+      position: relative;
     }
     .whats{
       position: fixed;
@@ -32,15 +38,18 @@ const GlobalStyles = createGlobalStyle`
       position: absolute;
       left: calc((100% - 65px)/2);
     }
+    /* Creio que isso não seja uma boa prática, (mexer no root), mas tenho minhas dúvidas */
     #root.responsive{
       width: auto;
       height: auto;
+      position: relative;
       display: grid;
-      grid-template-rows: 75px 1fr;
+      grid-template-rows: 75px 1fr 20px;
       grid-template-columns: 0.3fr 270px 1fr 0.3fr;
       grid-template-areas: 
       "cabeçalho cabeçalho cabeçalho cabeçalho"
-      "nothing nav main morenothing";
+      "nothing nav main morenothing"
+      "footer footer footer footer ";
     }
     .search{
       grid-column-start: 2;
@@ -49,9 +58,28 @@ const GlobalStyles = createGlobalStyle`
       width: 183px;
       height: 20px;
       border: none;
+      background-image: url(${search});
+      background-repeat: no-repeat;
+      background-size: 18px;
+      padding-left: 20px;
+    }
+    footer{
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 20px;
+      background-color: #E4E6E8;
+      text-align: center;
+      z-index: -1;
+      grid-area: footer;
+    }
+    footer a {
+      text-decoration: none;
+      color: grey;
     }
 `
 
+// verificando se o cliente vai precisar do layout responsivo 
 window.addEventListener('load', () => {
   window.innerWidth >= 1400 ? document.querySelector('#root').classList.add('responsive') : document.querySelector('#root').classList.remove('responsive')
 })
@@ -61,12 +89,12 @@ window.addEventListener('resize', () => {
 
 function App() {
   return (
-    <Router>
-      <GlobalStyles />
-
-      <Routes />
-
-    </Router>
+    <>
+      <Router>
+        <GlobalStyles />
+        <Routes />
+      </Router>
+    </>
   );
 }
 export default App;

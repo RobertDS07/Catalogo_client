@@ -148,11 +148,12 @@ function produtos(props) {
     return (
         <Produtos>
             <div className='catchContent'>
+                {/* Basicamente esse componente é a alma do site, ele trata tudo, sendo a principio uma parte para a raiz do site e outra para validar os produtos para suas devidas categorias, juntando com o search acaba ficando 4, pois quando tiver um search do cliente ele ira renderizar novos produtos  */}
                 {!props.tipo && !props.produtosAdmin && !props.search && !!props.produtos && props.produtos.map(e =>
                     //para cada produto um novo link, que também sera criado dinamicante
                     <Link key={e._id} to={'/' + e._id}>
                         <div className='content'>
-                            <img width='130' height='173' src={e.fotourl}></img>
+                            <img width='130' height='173' alt={e.nome} src={e.fotourl}></img>
                             <div className='container'>
                                 <h3>{e.nome}</h3><br />
                                 <h5>R$ {e.preço}</h5>
@@ -165,7 +166,7 @@ function produtos(props) {
                     //para cada produto um novo link, que também sera criado dinamicante
                     <Link key={e._id} to={'/' + e._id}>
                         <div className='content'>
-                            <img width='130' height='173' src={e.fotourl}></img>
+                            <img width='130' height='173' alt={e.nome} src={e.fotourl}></img>
                             <div className='container'>
                                 <h3>{e.nome}</h3><br />
                                 <h5>R$ {e.preço}</h5>
@@ -182,7 +183,7 @@ function produtos(props) {
                 {!!props.produtosAdmin && !props.searchAdmin && !props.tipoAdmin && props.produtosAdmin.map(e =>
                     <Link key={e._id} to={'/admin/produto/' + e._id}>
                         <div className='content'>
-                            <img width='130' height='173' src={e.fotourl} />
+                            <img width='130' height='173' alt={e.nome} src={e.fotourl} />
                             <div className='container'>
                                 <h3>{e.nome}</h3><br />
                                 <h5>R$ {e.preço}</h5>
@@ -195,7 +196,7 @@ function produtos(props) {
                     //para cada produto um novo link, que também sera criado dinamicante
                     <Link key={e._id} to={'/' + e._id}>
                         <div className='content'>
-                            <img width='130' height='173' src={e.fotourl}></img>
+                            <img width='130' height='173' alt={e.nome} src={e.fotourl}></img>
                             <div className='container'>
                                 <h3>{e.nome}</h3><br />
                                 <h5>R$ {e.preço}</h5>
@@ -205,6 +206,15 @@ function produtos(props) {
                 )}
                 {!props.searchAdmin && !!props.produtoAdmin && !!props.tipoAdmin && !!props.validateProducts && props.produtoAdmin.map(produto => props.validateProducts(produto, props.tipoAdmin))}
                 {!!props.searchAdmin && !props.produtoAdmin && !!props.tipoAdmin && !!props.validateProducts && props.searchAdmin.map(produto => props.validateProducts(produto, props.tipoAdmin))}
+
+                {/* Aqui é onde eu trato a page not found, botei dentro do produtos para poder centralizar  */}
+                {!!props.pageNotFound &&
+                    <>
+                        <h1>{props.pageNotFound}</h1>
+                        <h3>Página desconhecida</h3>
+                    </>
+                }
+
             </div>
         </Produtos>
     )
