@@ -139,7 +139,6 @@ const Produtos = styled.main`
 `
 
 function produtos(props) {
-    console.log(props);
     return (
         <Produtos>
             <div className='catchContent'>

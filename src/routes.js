@@ -97,9 +97,9 @@ export default function () {
     const [productsSearch, setProductsSearch] = useState(false)
     function searchFunction(text) {
         if (text !== '' && text !== null && text !== undefined) {
-            setProductsSearch(produtos.filter(e => {
-                if (e.nome.toLowerCase().includes(text.toLowerCase())) {
-                    return e
+            setProductsSearch(produtos.filter(produto => {
+                if (produto.nome.toLowerCase().includes(text.toLowerCase())) {
+                    return produto
                 }
             }))
         } else {
