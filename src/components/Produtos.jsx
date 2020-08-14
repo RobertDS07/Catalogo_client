@@ -6,37 +6,31 @@ const animation = keyframes`
     0%{
         margin-left: -100px;
         width: 0%;
-        height: 0%
         opacity: 0;
     }
     30%{
         margin-left: -60px;
         width: 0%;
-        height: 0%
         opacity: 0.2;
     }
     50%{
         margin-left: -40px;
         width: 0%;
-        height: 0%
         opacity: 0.3;
     }
     70%{
         margin-left: -40px;
         width: 0%;
-        height: 0%
         opacity: 0.5;
     }
     90%{
         margin-left: -40px;
         width: 0%;
-        height: 0%
         opacity: 0.6;
     }
     99%{
         margin-left: -10px;
         width: 140px;
-        height: 120px;
         opacity: 0.8;
     }
 `

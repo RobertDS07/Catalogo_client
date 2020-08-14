@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import loading from '../assets/loading.svg'
 
 const Loading = styled.div`
-    position: absolute;
-    top: 100px;
+    position: fixed;
+    top: 50px;
     left: 0;
     width: 100%;
     height: 120px;
@@ -12,7 +12,6 @@ const Loading = styled.div`
     align-items: center;
     justify-content: center;
     z-index: 3;
-    margin-bottom: 50px;
 `
 
 export default () => 
