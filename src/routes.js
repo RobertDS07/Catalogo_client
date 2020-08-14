@@ -33,7 +33,7 @@ export default function () {
 
     // pegando os itens para a utilizar na raiz do site (todos os produtos)
     useEffect(() => {
-        const getProdutos = async () => await axios.post(`https://catalogo-server.herokuapp.com/`, {
+        const getProdutos = async () => await axios.post(`https://catalogo-server.herokuapp.com`, {
             sort: sort,
         })
 
