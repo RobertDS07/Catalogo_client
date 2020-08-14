@@ -28,50 +28,76 @@ export default function () {
     // state utilizado para ver se o admin está logado ou não 
     const [logged, setLogged] = useState(false)
     // State utilizado para pegar os produtos do DB 
-    const [produtos, setProdutos] = useState()
+    const [produtos, setProdutos] = useState(false)
+    const [tipo, setTipo] = useState(false)
+
+    // const [tipoAdmin, setTipoAdmin] = useState(false)
+    const [produtoAdmin, setProdutoAdmin] = useState(false)
 
     // pegando os itens para a utilizar na raiz do site (todos os produtos)
     useEffect(() => {
-        const getProdutos = async () => await axios.post('https://catalogo-server.herokuapp.com/', {
-            sort: sort,
-        })
+        if (window.localStorage.length === 0) {
+            setLogged(false)
+        } else {
+            setLogged(true)
+        }
 
-        getProdutos().then(res => setProdutos(res.data))
-    }, [sort])
+        if (!tipo) {
+            const dados = async () => await axios.get('https://catalogo-server.herokuapp.com/tipos')
+            dados().then(res => setTipo(res.data))
+        }
 
-    // State utilizado para pegar todos os tipos(como tipos entendam categorias) disponiveis no DB para utilizar também na função validateProducts
-    const [tipo, setTipo] = React.useState()
+        if (!logged && window.localStorage.length === 0) {
+            const getProdutos = async () => await axios.post('https://catalogo-server.herokuapp.com/', {
+                sort: sort,
+            })
 
-    React.useEffect(() => {
-        const dados = async () => await axios.get('https://catalogo-server.herokuapp.com/tipos')
-        dados().then(res => setTipo(res.data))
-        // Quando o logged for alterado ele fara uma nova requisição para dar um rerender no componente 
-    }, [])
+            getProdutos().then(res => setProdutos(res.data))
+        } else {
+            const token = localStorage.getItem('authorization')
+            // if (!tipoAdmin) {
+            //     const dados = async () => await axios.post('https://catalogo-server.herokuapp.com/admin/tipos', { token: token })
+            //     dados().then(res => setTipoAdmin(res.data))
+            // }
 
-    const [tipoAdmin, setTipoAdmin] = React.useState()
-    const [produtoAdmin, setProdutoAdmin] = useState()
-        // pegando todos os produtos do Admin, é exatamente o que fiz na parte da raiz do site, a diferença é que se o usuario tentar logar a rota de admin não ira carregar os produtos
-    useEffect(() => {
-        //enviando o token para autenticação de admin
-        const token = localStorage.getItem('authorization')
-        const getProdutos = async () => await axios.post('https://catalogo-server.herokuapp.com/admin/', {
-            token: token,
-            sort: sort
-        })
-        getProdutos().then(res => setProdutoAdmin(res.data))
+            const getProdutos = async () => await axios.post('https://catalogo-server.herokuapp.com/admin/', {
+                token: token,
+                sort: sort
+            })
+
+            getProdutos().then(res => setProdutoAdmin(res.data))
+
+        }
     }, [sort, logged])
 
-    // pegando todos os tipos novamente para fazer usar na função validateProducts, dessa vez para o admin
-    React.useEffect(() => {
-        const token = localStorage.getItem('authorization')
-        const dados = async () => await axios.post('https://catalogo-server.herokuapp.com/admin/tipos', { token: token })
-        dados().then(res => setTipoAdmin(res.data))
-    }, [logged])
-    
+    // State utilizado para pegar todos os tipos(como tipos entendam categorias) disponiveis no DB para utilizar também na função validateProducts
+
+    // useEffect(() => {
+    //     if(!logged){
+    // }
+    //     // Quando o logged for alterado ele fara uma nova requisição para dar um rerender no componente 
+    // }, [])
+
+    //     // pegando todos os produtos do Admin, é exatamente o que fiz na parte da raiz do site, a diferença é que se o usuario tentar logar a rota de admin não ira carregar os produtos
+    // useEffect(() => {
+    //     if (logged){
+    //     //enviando o token para autenticação de admin
+
+    // }
+    // }, [sort, logged])
+
+    // // pegando todos os tipos novamente para fazer usar na função validateProducts, dessa vez para o admin
+    // useEffect(() => {
+    //     if (logged) {
+    //     const token = localStorage.getItem('authorization')
+
+    // }
+    // }, [logged])
+
     // função citada, que serve para receber cada um dos produtos e organizar onde cada um deve ficar, tornando o processo de categoria/produtos muito mais simples e automatizada
     function validateProducts(product, requiredType) {
         //faz a comparação da categoria do produto e dos tipos pegos com o setTipo
-        if (window.localStorage.length === 0) {
+        if (!logged) {
             if (product.tipo === requiredType) {
                 return (
                     <Link key={product._id} to={'/' + product._id}>
@@ -86,7 +112,7 @@ export default function () {
                 )
             }
         }
-        if (window.localStorage.length !== 0) {
+        if (logged) {
             if (product.tipo === requiredType) {
                 return (
                     <Link key={product._id} to={'/admin/produto/' + product._id}>
@@ -126,16 +152,15 @@ export default function () {
     window.addEventListener('load', () => window.innerWidth < 1400 ? setResponsive(false) : setResponsive(true))
     window.addEventListener('resize', () => window.innerWidth < 1400 ? setResponsive(false) : setResponsive(true))
 
-
     return (
         <>
             {/* Simples laoding, que praticamente não aparece direito, ainda não entendi por que tentei de todos os jeitos, mas pelo o que eu me lembre o browser sempre carrega js por ultimo e acaba que sendo o loading um componente jsx ele vem junto com o resto, não da muito efeito, tentei tambem passar ele sem ser componente para o app.js mas não obtive sucesso, talvez em uma futura refatoração eu arrume isso também.  */}
-            {!produtos && <Loading />}
+            {!produtos || !produtoAdmin && <Loading />}
             {/* Possivelmente esse A.jsx não precisaria existir, mas acabei deixando também ksksks, faço algo legal com ele também quando o responsive fica true, transformando-o em um tipo de <hr/>  */}
             <A link='https://www.instagram.com/direto__do__closet/' txt='@direto_do_closet' />
 
             {/* aqui eu faço essas verificações para ver se o admin não está logado e também para ver se não esta no layout responsive, pois lá tem uma area com o watsapp já  */}
-            {window.localStorage.length === 0 && window.innerWidth < 1400 &&
+            {!logged && window.innerWidth < 1400 &&
                 <a className='whats' href='https://wa.me/5551989424940?text=Oii%20'>
                     <img src={whats} alt='51989424940' width='70' height='70' />
                 </a>
@@ -147,7 +172,7 @@ export default function () {
             }
 
             {/* Só para deixar anotado eu não estou gostando de utilizar esse tipo de verificação para ver se o admin está logado ou não, mas acaba que o site é para minha namorada e creio que os clientes dela não irão ver as vulnerabilidades, e mesmo se tentassem o localstorage.length ser diferente de 0 ainda não os da a permissão de adicionar ou deletar nada, pois as requisições necessitam do token jwt para passar pelo middleware do back  */}
-            {window.localStorage.length !== 0 &&
+            {logged &&
                 // Modal para adicionar itens ao DB 
                 <Modal />
             }
@@ -158,12 +183,12 @@ export default function () {
             {!responsive &&
                 <>
                     <Nav>
-                        {window.localStorage.length === 0 &&
+                        {!logged &&
                             <ScrollNav searchFunction={searchFunction} tipo={tipo} />
                         }
                         {/* diferenciando se é admin ou não  */}
-                        {window.localStorage.length !== 0 && logged &&
-                            <ScrollNav searchFunction={searchFunction} tipoAdmin={tipoAdmin} />
+                        {logged &&
+                            <ScrollNav searchFunction={searchFunction} tipoAdmin={tipo} />
                         }
                     </Nav>
 
@@ -171,22 +196,22 @@ export default function () {
                 </>
             }
 
-            {responsive && window.localStorage.length === 0 &&
+            {responsive && !logged &&
                 <NavResponsive tipo={tipo} searchFunction={searchFunction} setSort={setSort} />
             }
-            {responsive && logged &&window.localStorage.length !== 0 &&
-                <NavResponsive tipoAdmin={tipoAdmin} searchFunction={searchFunction} setSort={setSort} />
+            {responsive && logged &&
+                <NavResponsive tipoAdmin={tipo} searchFunction={searchFunction} setSort={setSort} />
             }
 
             {/* rota raiz da aplicação */}
             <Route exact path="/">
                 {/* Aqui eu faço uma validação para ver se o usuario esta pesquisando algo, dessa forma passando o productsSearch invés de produtos  */}
-                {!productsSearch && !!produtos && <Produtos produtos={produtos} />}
+                {!productsSearch && <Produtos produtos={produtos} />}
                 {!!productsSearch && <Produtos search={productsSearch} />}
             </Route>
 
             {/* criando cada rota dinamicante com os tipos disponiveis no DB, fazerndo um map no tipo, e passando para dentro de produtos, junto com a função para organizar tudo em seu devido lugar*/}
-            {!!tipo && tipo.map(tipo =>
+            {!!tipo && !logged && tipo.map(tipo =>
                 <Route key={tipo} path={'/' + tipo} >
                     {!productsSearch && <Produtos tipo={tipo} produtos={produtos} validateProducts={validateProducts} />}
                     {!!productsSearch && <Produtos tipo={tipo} search={productsSearch} validateProducts={validateProducts} />}
@@ -207,17 +232,17 @@ export default function () {
 
             {/* criando a rota do catalogo do admin, onde se a pessoa não estiver logada não conseguira ver  */}
             <Route exact path='/admin/catalogo'>
-                {!productsSearch && logged && <Produtos produtosAdmin={produtoAdmin} />}
-                {!!productsSearch && logged && <Produtos searchAdmin={productsSearch} />}
-                {window.localStorage.length === 0 && <Redirect to='/' />}
+                {!productsSearch && !!produtoAdmin && <Produtos produtosAdmin={produtoAdmin} />}
+                {!!productsSearch && <Produtos searchAdmin={productsSearch} />}
+                {!logged && window.localStorage === 0 && <Redirect to='/' />}
             </Route>
 
-            {!!tipoAdmin && logged && tipoAdmin.map(tipo =>
+            {!!tipo && logged && tipo.map(tipo =>
                 //criando cada rota dinamicante com os tipos disponiveis no DB para o admin
                 <Route key={tipo} path={'/admin/catalogo/' + tipo}>
-                    {!productsSearch && logged && <Produtos produtoAdmin={produtoAdmin} tipoAdmin={tipo} validateProducts={validateProducts} />}
-                    {!!productsSearch && logged && <Produtos tipoAdmin={tipo} searchAdmin={productsSearch} validateProducts={validateProducts} />}
-                    {window.localStorage.length === 0 && <Redirect to='/' />}
+                    {!productsSearch && !!produtoAdmin && <Produtos produtoAdmin={produtoAdmin} tipoAdmin={tipo} validateProducts={validateProducts} />}
+                    {!!productsSearch && <Produtos tipoAdmin={tipo} searchAdmin={productsSearch} validateProducts={validateProducts} />}
+                    {!logged && window.localStorage === 0 && <Redirect to='/' />}
                 </Route>
             )}
 
@@ -225,7 +250,7 @@ export default function () {
             {!!produtoAdmin && logged && produtoAdmin.map(e =>
                 <Route key={e._id} path={'/admin/produto/' + e._id}>
                     <ProdutoSelecionado produtosAdmin={e} />
-                    {window.localStorage.length === 0 && <Redirect to='/' />}
+                    {!logged && window.localStorage === 0 && <Redirect to='/' />}
                 </Route>
             )}
 

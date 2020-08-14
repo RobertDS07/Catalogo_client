@@ -3,9 +3,8 @@ import styled from 'styled-components'
 import loading from '../assets/loading.svg'
 
 const Loading = styled.div`
-    position: fixed;
+    position: absolute;
     top: 50px;
-    left: 0;
     width: 100%;
     height: 120px;
     display: flex;

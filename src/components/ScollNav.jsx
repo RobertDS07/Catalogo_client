@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import search from '../assets/search.png'
-import { useState } from 'react'
 
 const ScrollNav = styled.div`
     width: auto;
@@ -67,10 +66,10 @@ export default props => {
             
             {/* esse onclick aqui é uma baita de uma gambiarra para estética do site, eu juro que arrumo isso alguma hora me desculpem */}
             {/* link para raiz do site  */}
-            {!props.tipoAdmin && !searchArea && <Link to='/' onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo' }}>Tudo</Link>}
+            {!props.tipoAdmin && !searchArea && <Link to='/' onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo'}}>Tudo</Link>}
 
             {/* setando cada um dos tipos com um link */}
-            {!!props.tipo && !searchArea && props.tipo.map(e => <Link key={e} onClick={() => { document.querySelector('.sort').children[0].innerHTML = e }} to={e}>{e}</Link>)}
+            {!!props.tipo && !props.tipoAdmin && !searchArea && props.tipo.map(e => <Link key={e} onClick={() => { document.querySelector('.sort').children[0].innerHTML = e }} to={e}>{e}</Link>)}
 
             {/* link para raiz do site ADM*/}
             {!!props.tipoAdmin && !searchArea && <Link onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo' }} to='/admin/catalogo'>Tudo</Link>}
