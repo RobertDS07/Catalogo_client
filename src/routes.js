@@ -206,7 +206,7 @@ export default function () {
             {/* rota raiz da aplicação */}
             <Route exact path="/">
                 {/* Aqui eu faço uma validação para ver se o usuario esta pesquisando algo, dessa forma passando o productsSearch invés de produtos  */}
-                {!productsSearch && <Produtos produtos={produtos} />}
+                {!productsSearch && !!produtos && <Produtos produtos={produtos} />}
                 {!!productsSearch && <Produtos search={productsSearch} />}
             </Route>
 
