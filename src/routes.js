@@ -48,9 +48,10 @@ export default function () {
         // Quando o logged for alterado ele fara uma nova requisição para dar um rerender no componente 
     }, [])
 
-    if(logged){
+    const [tipoAdmin, setTipoAdmin] = React.useState()
     const [produtoAdmin, setProdutoAdmin] = useState()
-    // pegando todos os produtos do Admin, é exatamente o que fiz na parte da raiz do site, a diferença é que se o usuario tentar logar a rota de admin não ira carregar os produtos
+    if(logged){
+        // pegando todos os produtos do Admin, é exatamente o que fiz na parte da raiz do site, a diferença é que se o usuario tentar logar a rota de admin não ira carregar os produtos
     useEffect(() => {
         //enviando o token para autenticação de admin
         const token = localStorage.getItem('authorization')
@@ -60,8 +61,6 @@ export default function () {
         })
         getProdutos().then(res => setProdutoAdmin(res.data))
     }, [sort, logged])
-
-    const [tipoAdmin, setTipoAdmin] = React.useState()
 
     // pegando todos os tipos novamente para fazer usar na função validateProducts, dessa vez para o admin
     React.useEffect(() => {
