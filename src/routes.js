@@ -122,7 +122,7 @@ export default function () {
             setProductsSearch(false)
         }
     }
-    
+
     // Aqui eu pego e vejo se vai precisar da parte da nav lateral, disponivel apartir de 1400px de width, provavelmente deve ter um jeito mais eficiente de fazer isso, talvez juntando os componentes nav e scrollNav em um só, e transformando-os no NavResponsive.jsx quando o width > 1400, mas por enquanto deixarei assim, talvez em alguma futura refatoração do código eu arrume...
     const [responsive, setResponsive] = useState(false)
     window.addEventListener('load', () => window.innerWidth < 1400 ? setResponsive(false) : setResponsive(true))
@@ -132,7 +132,7 @@ export default function () {
     return (
         <>
             {/* Simples laoding, que praticamente não aparece direito, ainda não entendi por que tentei de todos os jeitos, mas pelo o que eu me lembre o browser sempre carrega js por ultimo e acaba que sendo o loading um componente jsx ele vem junto com o resto, não da muito efeito, tentei tambem passar ele sem ser componente para o app.js mas não obtive sucesso, talvez em uma futura refatoração eu arrume isso também.  */}
-            {!produtos && <Loading/>}
+            {!produtos && <Loading />}
             {/* Possivelmente esse A.jsx não precisaria existir, mas acabei deixando também ksksks, faço algo legal com ele também quando o responsive fica true, transformando-o em um tipo de <hr/>  */}
             <A link='https://www.instagram.com/direto__do__closet/' txt='@direto_do_closet' />
 
@@ -180,64 +180,57 @@ export default function () {
                 <NavResponsive tipoAdmin={tipoAdmin} searchFunction={searchFunction} setSort={setSort} />
             }
 
-            {/* Esse switch eu adicionei agora na quase terminando o projeto para poder tratar o notFound */}
-            <Switch>
-                {/* rota raiz da aplicação */}
-                <Route exact path="/">
-                    {/* Aqui eu faço uma validação para ver se o usuario esta pesquisando algo, dessa forma passando o productsSearch invés de produtos  */}
-                    {!productsSearch && <Produtos produtos={produtos} />}
-                    {!!productsSearch && <Produtos search={productsSearch} />}
+            {/* rota raiz da aplicação */}
+            <Route exact path="/">
+                {/* Aqui eu faço uma validação para ver se o usuario esta pesquisando algo, dessa forma passando o productsSearch invés de produtos  */}
+                {!productsSearch && <Produtos produtos={produtos} />}
+                {!!productsSearch && <Produtos search={productsSearch} />}
+            </Route>
+
+            {/* criando cada rota dinamicante com os tipos disponiveis no DB, fazerndo um map no tipo, e passando para dentro de produtos, junto com a função para organizar tudo em seu devido lugar*/}
+            {!!tipo && tipo.map(tipo =>
+                <Route key={tipo} path={'/' + tipo} >
+                    {!productsSearch && <Produtos tipo={tipo} produtos={produtos} validateProducts={validateProducts} />}
+                    {!!productsSearch && <Produtos tipo={tipo} search={productsSearch} validateProducts={validateProducts} />}
                 </Route>
+            )}
 
-                {/* criando cada rota dinamicante com os tipos disponiveis no DB, fazerndo um map no tipo, e passando para dentro de produtos, junto com a função para organizar tudo em seu devido lugar*/}
-                {!!tipo && tipo.map(tipo =>
-                    <Route key={tipo} path={'/' + tipo} >
-                        {!productsSearch && <Produtos tipo={tipo} produtos={produtos} validateProducts={validateProducts} />}
-                        {!!productsSearch && <Produtos tipo={tipo} search={productsSearch} validateProducts={validateProducts} />}
-                    </Route>
-                )}
-
-                {/* aqui é onde eu crio as rotas para cada produto dinamicamente, para quando forem clicados o cliente vir para essa rota e ver melhor cada descrição e etc... */}
-                {!!produtos && produtos.map(e =>
-                    <Route key={e._id} path={'/' + e._id}>
-                        <ProdutoSelecionado produtos={e} />
-                    </Route>
-                )}
-
-                {/* criando a rota para o admin logar */}
-                <Route exact path='/admin'>
-                    <Admin setLogged={setLogged} logged={logged} />
+            {/* aqui é onde eu crio as rotas para cada produto dinamicamente, para quando forem clicados o cliente vir para essa rota e ver melhor cada descrição e etc... */}
+            {!!produtos && produtos.map(e =>
+                <Route key={e._id} path={'/' + e._id}>
+                    <ProdutoSelecionado produtos={e} />
                 </Route>
+            )}
 
-                {/* criando a rota do catalogo do admin, onde se a pessoa não estiver logada não conseguira ver  */}
-                <Route exact path='/admin/catalogo'>
-                    {!productsSearch && <Produtos produtosAdmin={produtoAdmin} />}
-                    {!!productsSearch && <Produtos searchAdmin={productsSearch} />}
+            {/* criando a rota para o admin logar */}
+            <Route exact path='/admin'>
+                <Admin setLogged={setLogged} logged={logged} />
+            </Route>
+
+            {/* criando a rota do catalogo do admin, onde se a pessoa não estiver logada não conseguira ver  */}
+            <Route exact path='/admin/catalogo'>
+                {!productsSearch && <Produtos produtosAdmin={produtoAdmin} />}
+                {!!productsSearch && <Produtos searchAdmin={productsSearch} />}
+                {window.localStorage.length === 0 && <Redirect to='/' />}
+            </Route>
+
+            {!!tipoAdmin && tipoAdmin.map(tipo =>
+                //criando cada rota dinamicante com os tipos disponiveis no DB para o admin
+                <Route key={tipo} path={'/admin/catalogo/' + tipo}>
+                    {!productsSearch && <Produtos produtoAdmin={produtoAdmin} tipoAdmin={tipo} validateProducts={validateProducts} />}
+                    {!!productsSearch && <Produtos tipoAdmin={tipo} searchAdmin={productsSearch} validateProducts={validateProducts} />}
                     {window.localStorage.length === 0 && <Redirect to='/' />}
                 </Route>
+            )}
 
-                {!!tipoAdmin && tipoAdmin.map(tipo =>
-                    //criando cada rota dinamicante com os tipos disponiveis no DB para o admin
-                    <Route key={tipo} path={'/admin/catalogo/' + tipo}>
-                        {!productsSearch && <Produtos produtoAdmin={produtoAdmin} tipoAdmin={tipo} validateProducts={validateProducts} />}
-                        {!!productsSearch && <Produtos tipoAdmin={tipo} searchAdmin={productsSearch} validateProducts={validateProducts} />}
-                        {window.localStorage.length === 0 && <Redirect to='/' />}
-                    </Route>
-                )}
-
-                {/* aqui é onde eu crio as rotas para cada produto dinamicamente, para quando forem clicados o cliente vir para essa rota e ver melhor cada descrição e etc... */}
-                {!!produtoAdmin && produtoAdmin.map(e =>
-                    <Route key={e._id} path={'/admin/produto/' + e._id}>
-                        <ProdutoSelecionado produtosAdmin={e} />
-                        {window.localStorage.length === 0 && <Redirect to='/' />}
-                    </Route>
-                )}
-
-                {/* caso o usuario tente acessar alguma rota inexistente  */}
-                <Route>
-                    <Produtos pageNotFound='404' />
+            {/* aqui é onde eu crio as rotas para cada produto dinamicamente, para quando forem clicados o cliente vir para essa rota e ver melhor cada descrição e etc... */}
+            {!!produtoAdmin && produtoAdmin.map(e =>
+                <Route key={e._id} path={'/admin/produto/' + e._id}>
+                    <ProdutoSelecionado produtosAdmin={e} />
+                    {window.localStorage.length === 0 && <Redirect to='/' />}
                 </Route>
-            </Switch>
+            )}
+
             {/* vou mostrar o footer apenas se estiver em layout responsivo, pois no mobile fica muito feio  */}
             {responsive && <footer><a href='https://twitter.com/bugextreme1'>Desenvolvido por Robert Damaceno</a></footer>}
         </>
