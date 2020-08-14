@@ -12,6 +12,7 @@ const Loading = styled.div`
     align-items: center;
     justify-content: center;
     z-index: 3;
+    margin-bottom: 50px;
 `
 
 export default () => 

@@ -88,7 +88,7 @@ export default props => {
                         {imgWidth > 1400 &&
                             <img src={props.produtosAdmin.fotourl} alt='Foto produto' width='400' height='533' />
                         }
-                        <form className='form' action={process.env.URL_SERVER + '/admin/delete'} method='POST'>
+                        <form className='form' action='https://catalogo-server.herokuapp.com/admin/delete' method='POST'>
                             <button type='submit'>X</button>
                             <input type="hidden" name="token" value={window.localStorage.getItem('authorization')} />
                             <input type='hidden' name='id' value={props.produtosAdmin._id} />
