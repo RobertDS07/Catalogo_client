@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Route,
     Link,
-    Redirect,
-    Switch,
+    Redirect
 } from "react-router-dom";
 import axios from 'axios'
 
@@ -38,7 +37,7 @@ export default function () {
         })
 
         getProdutos().then(res => setProdutos(res.data))
-    }, [sort, logged])
+    }, [sort])
 
     // State utilizado para pegar todos os tipos(como tipos entendam categorias) disponiveis no DB para utilizar também na função validateProducts
     const [tipo, setTipo] = React.useState()
@@ -47,8 +46,9 @@ export default function () {
         const dados = async () => await axios.get('https://catalogo-server.herokuapp.com/tipos')
         dados().then(res => setTipo(res.data))
         // Quando o logged for alterado ele fara uma nova requisição para dar um rerender no componente 
-    }, [logged])
+    }, [])
 
+    if(logged){
     const [produtoAdmin, setProdutoAdmin] = useState()
     // pegando todos os produtos do Admin, é exatamente o que fiz na parte da raiz do site, a diferença é que se o usuario tentar logar a rota de admin não ira carregar os produtos
     useEffect(() => {
@@ -69,7 +69,7 @@ export default function () {
         const dados = async () => await axios.post('https://catalogo-server.herokuapp.com/admin/tipos', { token: token })
         dados().then(res => setTipoAdmin(res.data))
     }, [logged])
-
+}
     // função citada, que serve para receber cada um dos produtos e organizar onde cada um deve ficar, tornando o processo de categoria/produtos muito mais simples e automatizada
     function validateProducts(product, requiredType) {
         //faz a comparação da categoria do produto e dos tipos pegos com o setTipo
@@ -183,7 +183,7 @@ export default function () {
             {/* rota raiz da aplicação */}
             <Route exact path="/">
                 {/* Aqui eu faço uma validação para ver se o usuario esta pesquisando algo, dessa forma passando o productsSearch invés de produtos  */}
-                {!productsSearch && <Produtos produtos={produtos} />}
+                {!productsSearch && !!produtos && <Produtos produtos={produtos} />}
                 {!!productsSearch && <Produtos search={productsSearch} />}
             </Route>
 
