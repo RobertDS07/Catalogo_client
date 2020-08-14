@@ -149,7 +149,7 @@ function produtos(props) {
         <Produtos>
             <div className='catchContent'>
                 {/* Basicamente esse componente é a alma do site, ele trata tudo, sendo a principio uma parte para a raiz do site e outra para validar os produtos para suas devidas categorias, juntando com o search acaba ficando 4, pois quando tiver um search do cliente ele ira renderizar novos produtos  */}
-                {!props.tipo && !props.produtosAdmin && !props.search && !!props.produtos && props.produtos.map(e =>
+                {!props.validateProducts && !props.produtosAdmin && !props.search && !!props.produtos && props.produtos.map(e =>
                     //para cada produto um novo link, que também sera criado dinamicante
                     <Link key={e._id} to={'/' + e._id}>
                         <div className='content'>
