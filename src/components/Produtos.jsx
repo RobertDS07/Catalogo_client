@@ -199,7 +199,7 @@ function produtos(props) {
                         </div>
                     </Link>
                 )}
-                {!props.searchAdmin && !!props.produtoAdmin && !!props.tipoAdmin && !!props.validateProducts && props.produtoAdmin.map(produto => props.validateProducts(produto, props.tipoAdmin))}
+                {!props.searchAdmin && !props.produtos && !!props.produtoAdmin && !!props.tipoAdmin && !!props.validateProducts && props.produtoAdmin.map(produto => props.validateProducts(produto, props.tipoAdmin))}
                 {!!props.searchAdmin && !props.produtoAdmin && !!props.tipoAdmin && !!props.validateProducts && props.searchAdmin.map(produto => props.validateProducts(produto, props.tipoAdmin))}
 
                 {/* Aqui é onde eu trato a page not found, botei dentro do produtos para poder centralizar  */}
