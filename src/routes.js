@@ -24,7 +24,7 @@ import logo from './assets/logo.png'
 import arrowUp from './assets/arrowUp.png'
 
 export default function () {
-
+    {console.log(process.env)}
     // State utilizado para atualizar o useEffect toda vez que o usuario modificar o sort, desse jeito fazendo uma nova requisição ao server para que em todos as categorias tenham o mesmo sort 
     const [sort, setSort] = useState('tipo')
     // state utilizado para ver se o admin está logado ou não 
