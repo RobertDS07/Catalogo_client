@@ -50,7 +50,6 @@ export default function () {
 
     const [tipoAdmin, setTipoAdmin] = React.useState()
     const [produtoAdmin, setProdutoAdmin] = useState()
-    if(logged){
         // pegando todos os produtos do Admin, é exatamente o que fiz na parte da raiz do site, a diferença é que se o usuario tentar logar a rota de admin não ira carregar os produtos
     useEffect(() => {
         //enviando o token para autenticação de admin
@@ -68,7 +67,7 @@ export default function () {
         const dados = async () => await axios.post('https://catalogo-server.herokuapp.com/admin/tipos', { token: token })
         dados().then(res => setTipoAdmin(res.data))
     }, [logged])
-}
+    
     // função citada, que serve para receber cada um dos produtos e organizar onde cada um deve ficar, tornando o processo de categoria/produtos muito mais simples e automatizada
     function validateProducts(product, requiredType) {
         //faz a comparação da categoria do produto e dos tipos pegos com o setTipo
