@@ -59,22 +59,16 @@ export default props => {
 
     return (
         <ScrollNav>
-            {/* aqui é onde eu trato o search do usuario, onde sempre que o usuario fechar o input ele ira retornar para a função de search null, e desse modo ira cair na condição para setar o productsSearch como false, assim o componente Produtos volta a exibir os produtos default  */}
             {!searchArea && <img src={search} alt='Search' width='16' height='16' onClick={() => setSearchArea(true)} />}
             {searchArea && <h3 onClick={() => {setSearchArea(false); props.searchFunction(null)}}>X</h3>}
             {searchArea && <input type='text' placeholder='O que você procura?' onChange={e => props.searchFunction(e.target.value)} ></input>}
             
-            {/* esse onclick aqui é uma baita de uma gambiarra para estética do site, eu juro que arrumo isso alguma hora me desculpem */}
-            {/* link para raiz do site  */}
             {!props.tipoAdmin && !searchArea && <Link to='/' onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo'}}>Tudo</Link>}
 
-            {/* setando cada um dos tipos com um link */}
             {!!props.tipo && !props.tipoAdmin && !searchArea && props.tipo.map(e => <Link key={e} onClick={() => { document.querySelector('.sort').children[0].innerHTML = e }} to={e}>{e}</Link>)}
 
-            {/* link para raiz do site ADM*/}
             {!!props.tipoAdmin && !searchArea && <Link onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo' }} to='/admin/catalogo'>Tudo</Link>}
 
-            {/* setando cada um dos tipos com um link */}
             {!!props.tipoAdmin && !searchArea && props.tipoAdmin.map(e => <Link key={e} onClick={() => { document.querySelector('.sort').children[0].innerHTML = e }} to={'/admin/catalogo/' + e}>{e}</Link>)}
         </ScrollNav>
     )

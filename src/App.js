@@ -78,7 +78,6 @@ const GlobalStyles = createGlobalStyle`
     }
 `
 
-// verificando se o cliente vai precisar do layout responsivo 
 window.addEventListener('load', () => {
   window.innerWidth >= 1400 ? document.querySelector('#root').classList.add('responsive') : document.querySelector('#root').classList.remove('responsive')
 })

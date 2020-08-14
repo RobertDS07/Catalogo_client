@@ -25,7 +25,6 @@ const Admin = styled.div`
 
 export default function (props) {
     function login() {
-        // pegando os valores dos inputs para passar para o db 
         const user = document.querySelector('#user').value
         const password = document.querySelector('#password').value
 

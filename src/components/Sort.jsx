@@ -87,7 +87,6 @@ const Sort = styled.div`
     }
 `
 
-// criei essa função simplesmente para poder tirar o eventListener do scroll pois estava dando erro quando o usuario mudava sua innerWidth 
 function fixSort() {
     let sort = document.querySelectorAll('.sort')
     window.pageYOffset >= sort[0].offsetTop ? sort[0].classList.add('fixedRight') : sort[0].classList.remove('fixedRight')

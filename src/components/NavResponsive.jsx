@@ -43,7 +43,6 @@ const NavResponsive = styled.nav`
         }
 `
 
-// funções para deixar o layout um poquinho mais bonito 
 function clearSelected() {
     let categorias = document.querySelector('#categorias')
     categorias = Array.from(categorias.children)
@@ -62,7 +61,6 @@ function clearSelectedOrdenar() {
 export default props => {
     return (
         <>
-            {/* input de search, tem que ficar fora do componente pois ele fica um pouco acima   */}
             <input className='search' type='text' placeholder='O que você procura?' onChange={e => props.searchFunction(e.target.value)} ></input>
             <NavResponsive>
                 {!!props.tipo && !props.tipoAdmin &&
