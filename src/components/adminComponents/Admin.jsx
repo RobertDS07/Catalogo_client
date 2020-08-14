@@ -29,7 +29,7 @@ export default function (props) {
         const user = document.querySelector('#user').value
         const password = document.querySelector('#password').value
 
-        const token = async () => await axios.post(`${process.env.URL_SERVER}/auth`, {
+        const token = async () => await axios.post(`https://catalogo-server.herokuapp.com/auth`, {
             user: user,
             password: password
         })

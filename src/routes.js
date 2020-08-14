@@ -24,7 +24,6 @@ import logo from './assets/logo.png'
 import arrowUp from './assets/arrowUp.png'
 
 export default function () {
-    {console.log(process.env)}
     // State utilizado para atualizar o useEffect toda vez que o usuario modificar o sort, desse jeito fazendo uma nova requisição ao server para que em todos as categorias tenham o mesmo sort 
     const [sort, setSort] = useState('tipo')
     // state utilizado para ver se o admin está logado ou não 
@@ -34,7 +33,7 @@ export default function () {
 
     // pegando os itens para a utilizar na raiz do site (todos os produtos)
     useEffect(() => {
-        const getProdutos = async () => await axios.post(`${process.env.URL_SERVER} +/`, {
+        const getProdutos = async () => await axios.post(`https://catalogo-server.herokuapp.com/`, {
             sort: sort,
         })
 
@@ -45,7 +44,7 @@ export default function () {
     const [tipo, setTipo] = React.useState()
 
     React.useEffect(() => {
-        const dados = async () => await axios.get(`${process.env.URL_SERVER} +/tipos`)
+        const dados = async () => await axios.get(`https://catalogo-server.herokuapp.com/tipos`)
         dados().then(res => setTipo(res.data))
         // Quando o logged for alterado ele fara uma nova requisição para dar um rerender no componente 
     }, [logged])
@@ -55,7 +54,7 @@ export default function () {
     useEffect(() => {
         //enviando o token para autenticação de admin
         const token = localStorage.getItem('authorization')
-        const getProdutos = async () => await axios.post(`${process.env.URL_SERVER} +/admin/`, {
+        const getProdutos = async () => await axios.post(`https://catalogo-server.herokuapp.com/admin/`, {
             token: token,
             sort: sort
         })
@@ -67,7 +66,7 @@ export default function () {
     // pegando todos os tipos novamente para fazer usar na função validateProducts, dessa vez para o admin
     React.useEffect(() => {
         const token = localStorage.getItem('authorization')
-        const dados = async () => await axios.post(`${process.env.URL_SERVER} +/admin/tipos`, { token: token })
+        const dados = async () => await axios.post(`https://catalogo-server.herokuapp.com/admin/tipos`, { token: token })
         dados().then(res => setTipoAdmin(res.data))
     }, [logged])
 

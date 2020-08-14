@@ -99,7 +99,7 @@ export default props => {
                         <h3 className='margin-top'>{props.produtosAdmin.descriçao}</h3>
                         <p className='margin-top'>{props.produtosAdmin.tamanho}</p>
                         <p className='p'>{props.produtosAdmin.preço}</p><br />
-                        <form action={process.env.URL_SERVER + '/admin/update'} method='POST'>
+                        <form action='https://catalogo-server.herokuapp.com/admin/update' method='POST'>
                             <label htmlFor='fotourl'>URL da foto:</label>
                             <input type='text' name='fotourl' /><br />
                             <label htmlFor='nome'>Nome:</label>

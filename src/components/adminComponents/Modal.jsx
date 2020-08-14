@@ -43,7 +43,7 @@ export default props => {
             <Circle onClick={() => setVisible(true)}>+</Circle>
             {visible &&
                 <Modal id='modal' onClick={e => e.target.id === 'modal' && setVisible(false) }>
-                    <form action={process.env.URL_SERVER + '/admin/add'} method="post">
+                    <form action='https://catalogo-server.herokuapp.com/admin/add' method="post">
                         <label htmlFor="fotourl">URL da foto:</label>
                         <input type="text" name="fotourl" id="fotourl" placeholder='EX: http://.../.png .jpg ...' />
                         <label htmlFor="nome">Nome:</label>
