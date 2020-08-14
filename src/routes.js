@@ -164,7 +164,7 @@ export default function () {
                             <ScrollNav searchFunction={searchFunction} tipo={tipo} />
                         }
                         {/* diferenciando se é admin ou não  */}
-                        {window.localStorage.length !== 0 &&
+                        {window.localStorage.length !== 0 && logged &&
                             <ScrollNav searchFunction={searchFunction} tipoAdmin={tipoAdmin} />
                         }
                     </Nav>
@@ -176,7 +176,7 @@ export default function () {
             {responsive && window.localStorage.length === 0 &&
                 <NavResponsive tipo={tipo} searchFunction={searchFunction} setSort={setSort} />
             }
-            {responsive && window.localStorage.length !== 0 &&
+            {responsive && logged &&window.localStorage.length !== 0 &&
                 <NavResponsive tipoAdmin={tipoAdmin} searchFunction={searchFunction} setSort={setSort} />
             }
 
@@ -209,22 +209,22 @@ export default function () {
 
             {/* criando a rota do catalogo do admin, onde se a pessoa não estiver logada não conseguira ver  */}
             <Route exact path='/admin/catalogo'>
-                {!productsSearch && <Produtos produtosAdmin={produtoAdmin} />}
-                {!!productsSearch && <Produtos searchAdmin={productsSearch} />}
+                {!productsSearch && logged && <Produtos produtosAdmin={produtoAdmin} />}
+                {!!productsSearch && logged && <Produtos searchAdmin={productsSearch} />}
                 {window.localStorage.length === 0 && <Redirect to='/' />}
             </Route>
 
-            {!!tipoAdmin && tipoAdmin.map(tipo =>
+            {!!tipoAdmin && logged && tipoAdmin.map(tipo =>
                 //criando cada rota dinamicante com os tipos disponiveis no DB para o admin
                 <Route key={tipo} path={'/admin/catalogo/' + tipo}>
-                    {!productsSearch && <Produtos produtoAdmin={produtoAdmin} tipoAdmin={tipo} validateProducts={validateProducts} />}
-                    {!!productsSearch && <Produtos tipoAdmin={tipo} searchAdmin={productsSearch} validateProducts={validateProducts} />}
+                    {!productsSearch && logged && <Produtos produtoAdmin={produtoAdmin} tipoAdmin={tipo} validateProducts={validateProducts} />}
+                    {!!productsSearch && logged && <Produtos tipoAdmin={tipo} searchAdmin={productsSearch} validateProducts={validateProducts} />}
                     {window.localStorage.length === 0 && <Redirect to='/' />}
                 </Route>
             )}
 
             {/* aqui é onde eu crio as rotas para cada produto dinamicamente, para quando forem clicados o cliente vir para essa rota e ver melhor cada descrição e etc... */}
-            {!!produtoAdmin && produtoAdmin.map(e =>
+            {!!produtoAdmin && logged && produtoAdmin.map(e =>
                 <Route key={e._id} path={'/admin/produto/' + e._id}>
                     <ProdutoSelecionado produtosAdmin={e} />
                     {window.localStorage.length === 0 && <Redirect to='/' />}
