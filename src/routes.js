@@ -155,7 +155,7 @@ export default function () {
     return (
         <>
             {/* Simples laoding, que praticamente não aparece direito, ainda não entendi por que tentei de todos os jeitos, mas pelo o que eu me lembre o browser sempre carrega js por ultimo e acaba que sendo o loading um componente jsx ele vem junto com o resto, não da muito efeito, tentei tambem passar ele sem ser componente para o app.js mas não obtive sucesso, talvez em uma futura refatoração eu arrume isso também.  */}
-            {!produtos || !produtoAdmin && <Loading />}
+            {!produtos && <Loading />}
             {/* Possivelmente esse A.jsx não precisaria existir, mas acabei deixando também ksksks, faço algo legal com ele também quando o responsive fica true, transformando-o em um tipo de <hr/>  */}
             <A link='https://www.instagram.com/direto__do__closet/' txt='@direto_do_closet' />
 
