@@ -70,7 +70,6 @@ const GlobalStyles = createGlobalStyle`
       height: 20px;
       background-color: #E4E6E8;
       text-align: center;
-      z-index: -1;
       grid-area: footer;
     }
     footer a {

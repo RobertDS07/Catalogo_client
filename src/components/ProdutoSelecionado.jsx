@@ -88,7 +88,7 @@ export default props => {
                         {imgWidth > 1400 &&
                             <img src={props.produtosAdmin.fotourl} alt='Foto produto' width='400' height='533' />
                         }
-                        <form className='form' action='http://localhost:8081/admin/delete' method='POST'>
+                        <form className='form' action={process.env.URL_SERVER + '/admin/delete'} method='POST'>
                             <button type='submit'>X</button>
                             <input type="hidden" name="token" value={window.localStorage.getItem('authorization')} />
                             <input type='hidden' name='id' value={props.produtosAdmin._id} />
@@ -99,7 +99,7 @@ export default props => {
                         <h3 className='margin-top'>{props.produtosAdmin.descriçao}</h3>
                         <p className='margin-top'>{props.produtosAdmin.tamanho}</p>
                         <p className='p'>{props.produtosAdmin.preço}</p><br />
-                        <form action='http://localhost:8081/admin/update' method='POST'>
+                        <form action={process.env.URL_SERVER + '/admin/update'} method='POST'>
                             <label htmlFor='fotourl'>URL da foto:</label>
                             <input type='text' name='fotourl' /><br />
                             <label htmlFor='nome'>Nome:</label>

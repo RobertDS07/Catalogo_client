@@ -29,7 +29,7 @@ export default function (props) {
         const user = document.querySelector('#user').value
         const password = document.querySelector('#password').value
 
-        const token = async () => await axios.post('http://localhost:8081/auth', {
+        const token = async () => await axios.post(`${process.env.URL_SERVER}/auth`, {
             user: user,
             password: password
         })
