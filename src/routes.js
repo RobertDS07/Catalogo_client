@@ -127,7 +127,7 @@ export default function () {
             }
 
             {logged &&
-                <Modal />
+                <Modal setLogged={setLogged} />
             }
 
             <img className='logo' alt='Direto_Do_Closet' src={logo} />

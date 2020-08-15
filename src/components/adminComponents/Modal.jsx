@@ -33,7 +33,7 @@ const Circle = styled.div`
         font-weight: bold;
         text-align: center;
         cursor: pointer;
-        .logoff{
+        &.logoff{
             bottom: 40px;
         }
 `
@@ -44,7 +44,7 @@ export default props => {
     return (
         <>
             <Circle onClick={() => setVisible(true)}>+</Circle>
-            <Circle className='logoff' onClick={() => window.localStorage.removeItem('authorization')}>Sair</Circle>
+            <Circle className='logoff' onClick={() => {window.localStorage.removeItem('authorization'); props.setLogged(false)}}>Sair</Circle>
             {visible &&
                 <Modal id='modal' onClick={e => e.target.id === 'modal' && setVisible(false) }>
                     <form action='https://catalogo-server.herokuapp.com/admin/add' method="post">
