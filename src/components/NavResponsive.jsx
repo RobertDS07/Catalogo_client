@@ -73,8 +73,8 @@ export default props => {
                         <h1>Ordenar por</h1>
                         <div id='ordenar'>
                             <h3 className='margin selected' onClick={e => { props.setSort('tipo'); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Categorias</h3>
-                            <h3 className='margin' onClick={e => { props.setSort({'tipo':'asc'}); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Menor preço</h3>
-                            <h3 className='margin' onClick={e => { props.setSort({'tipo':'desc'}); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Maior preço</h3>
+                            <h3 className='margin' onClick={e => { props.setSort({ 'preço': 'asc' }); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Menor preço</h3>
+                            <h3 className='margin' onClick={e => { props.setSort({ 'preço': 'desc' }); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Maior preço</h3>
                         </div>
                         <hr />
                         <a href='https://wa.me/5551989424940?text=Oii%20'>
@@ -96,8 +96,8 @@ export default props => {
                         <h1>Ordenar por</h1>
                         <div id='ordenar'>
                             <h3 className='margin selected' onClick={e => { props.setSort('tipo'); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Categorias</h3>
-                            <h3 className='margin' onClick={e => { props.setSort({'tipo':'asc'}); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Menor preço</h3>
-                            <h3 className='margin' onClick={e => { props.setSort({'tipo':'desc'}); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Maior preço</h3>
+                            <h3 className='margin' onClick={e => { props.setSort({ 'preço': 'asc' }); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Menor preço</h3>
+                            <h3 className='margin' onClick={e => { props.setSort({ 'preço': 'desc' }); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Maior preço</h3>
                         </div>
                         <hr />
                         <a href='https://wa.me/5551989424940?text=Oii%20'>

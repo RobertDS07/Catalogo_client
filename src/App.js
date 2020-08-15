@@ -41,7 +41,7 @@ const GlobalStyles = createGlobalStyle`
     /* Creio que isso não seja uma boa prática, (mexer no root), mas tenho minhas dúvidas */
     #root.responsive{
       width: auto;
-      height: auto;
+      min-height: 100vh;
       position: relative;
       display: grid;
       grid-template-rows: 75px 1fr 20px;

@@ -33,9 +33,12 @@ const Circle = styled.div`
         font-weight: bold;
         text-align: center;
         cursor: pointer;
+        z-index: 1;
         &.logoff{
             font-size: 10px;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             bottom: 55px;
         }
 `

@@ -96,8 +96,10 @@ export default function () {
 
     const [productsSearch, setProductsSearch] = useState(false)
     function searchFunction(text) {
+        let produtoToSearch = produtos
+        !logged ? produtoToSearch = produtos : produtoToSearch = produtoAdmin
         if (text !== '' && text !== null && text !== undefined) {
-            setProductsSearch(produtos.filter(produto => {
+            setProductsSearch(produtoToSearch.filter(produto => {
                 if (produto.nome.toLowerCase().includes(text.toLowerCase())) {
                     return produto
                 }

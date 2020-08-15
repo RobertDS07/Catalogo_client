@@ -120,7 +120,6 @@ const Produtos = styled.main`
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        align-items: center;
     }
 }
 @media(min-width: 1400px) {
@@ -132,8 +131,7 @@ const Produtos = styled.main`
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
+        justify-content: flex-start;
     }
 }
 `
