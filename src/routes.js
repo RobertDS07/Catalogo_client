@@ -31,10 +31,10 @@ export default function () {
     const [produtoAdmin, setProdutoAdmin] = useState(false)
 
     useEffect(() => {
-        if (window.localStorage.length === 0) {
-            setLogged(false)
-        } else {
+        if (window.localStorage.length !== 0) {
             setLogged(true)
+        } else {
+            setLogged(false)
         }
 
         if (!tipo) {
