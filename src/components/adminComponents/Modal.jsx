@@ -34,7 +34,8 @@ const Circle = styled.div`
         text-align: center;
         cursor: pointer;
         &.logoff{
-            bottom: 40px;
+            font-size: 10px;
+            bottom: 55px;
         }
 `
 
