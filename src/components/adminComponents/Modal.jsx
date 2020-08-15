@@ -41,6 +41,7 @@ export default props => {
     return (
         <>
             <Circle onClick={() => setVisible(true)}>+</Circle>
+            <Circle onClick={() => window.localStorage.length = 0}>Sair</Circle>
             {visible &&
                 <Modal id='modal' onClick={e => e.target.id === 'modal' && setVisible(false) }>
                     <form action='https://catalogo-server.herokuapp.com/admin/add' method="post">
