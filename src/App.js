@@ -33,6 +33,7 @@ const GlobalStyles = createGlobalStyle`
       right: 50px;
       bottom: 30px;
       border-radius: 50%;
+      cursor: pointer;
     }
     .logo{
       position: absolute;
