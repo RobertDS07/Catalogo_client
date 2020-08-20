@@ -43,7 +43,7 @@ export default function () {
         }
 
         if (!logged && window.localStorage.length === 0) {
-            const getProdutos = async () => await axios.post('https://catalogo-server.herokuapp.com/', {
+            const getProdutos = async () => await axios.get('https://catalogo-server.herokuapp.com/', {
                 sort: sort,
             })
 
@@ -51,7 +51,7 @@ export default function () {
         } else {
             const token = localStorage.getItem('authorization')
 
-            const getProdutos = async () => await axios.post('https://catalogo-server.herokuapp.com/admin/', {
+            const getProdutos = async () => await axios.get('https://catalogo-server.herokuapp.com/admin/', {
                 token: token,
                 sort: sort
             })
