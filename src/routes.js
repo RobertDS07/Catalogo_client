@@ -43,7 +43,7 @@ export default function () {
         }
 
         if (!logged && window.localStorage.length === 0) {
-            const getProdutos = async () => await axios.get('https://catalogo-server.herokuapp.com/', {
+            const getProdutos = async () => await axios.post('https://catalogo-server.herokuapp.com/', {
                 sort: sort,
             })
 
