@@ -1,10 +1,7 @@
 import React from 'react';
-import {
-  BrowserRouter as Router
-} from "react-router-dom";
 import { createGlobalStyle } from 'styled-components'
+import { BrowserRouter as Router } from 'react-router-dom'
 
-//puxando o Routes para renderizar os componentes que serão modificados de acordo com a rota
 import Routes from './routes'
 
 import search from '../src/assets/search.png'
@@ -82,8 +79,8 @@ const GlobalStyles = createGlobalStyle`
 function App() {
   return (
     <>
+      <GlobalStyles />
       <Router>
-        <GlobalStyles />
         <Routes />
       </Router>
     </>

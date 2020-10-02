@@ -87,27 +87,27 @@ const Sort = styled.div`
     }
 `
 
-function fixSort() {
-    let sort = document.querySelectorAll('.sort')
-    window.pageYOffset >= sort[0].offsetTop ? sort[0].classList.add('fixedRight') : sort[0].classList.remove('fixedRight')
-    window.pageYOffset >= sort[0].offsetTop ? sort[1].classList.add('fixed') : sort[1].classList.remove('fixed')
-}
-
-window.addEventListener('load', () => {
-    if (window.innerWidth < 1400) {
-        window.addEventListener('scroll', fixSort)
-    }
-})
-window.addEventListener('resize', () => {
-    if (window.innerWidth < 1400) {
-        window.addEventListener('scroll', fixSort)
-    } else {
-        window.removeEventListener('scroll', fixSort)
-    }
-})
-
 export default props => {
     const [visible, setVisible] = useState(false)
+
+    function fixSort() {
+        let sort = document.querySelectorAll('.sort')
+        window.pageYOffset >= sort[0].offsetTop ? sort[0].classList.add('fixedRight') : sort[0].classList.remove('fixedRight')
+        window.pageYOffset >= sort[0].offsetTop ? sort[1].classList.add('fixed') : sort[1].classList.remove('fixed')
+    }
+    
+    window.addEventListener('load', () => {
+        if (window.innerWidth < 1400) {
+            window.addEventListener('scroll', fixSort)
+        }
+    })
+    window.addEventListener('resize', () => {
+        if (window.innerWidth < 1400) {
+            window.addEventListener('scroll', fixSort)
+        } else {
+            window.removeEventListener('scroll', fixSort)
+        }
+    })
 
     return (
         <Sort>
@@ -120,9 +120,9 @@ export default props => {
             {!!visible &&
                 <div id='modal' onClick={() => setVisible(false)}>
                     <div className='options'>
-                        <p className='p strong' onClick={() => props.setSort('tipo')}>Categorias</p>
-                        <p className='p' onClick={() => props.setSort({ 'preço': 'asc' })}>Menor preço</p>
-                        <p className='p' onClick={() => props.setSort({ 'preço': 'desc' })}>Maior preço</p>
+                        <p className='p strong' onClick={() => props.setSort(false)}>Categorias</p>
+                        <p className='p' onClick={() => props.setSort('asc')}>Menor preço</p>
+                        <p className='p' onClick={() => props.setSort('desc')}>Maior preço</p>
                     </div>
                 </div>
             }

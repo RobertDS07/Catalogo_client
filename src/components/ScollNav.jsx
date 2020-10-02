@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+
+import debounce from '../utils/debounce'
+
 import search from '../assets/search.png'
 
 const ScrollNav = styled.div`
@@ -61,7 +64,7 @@ export default props => {
         <ScrollNav>
             {!searchArea && <img src={search} alt='Search' width='16' height='16' onClick={() => setSearchArea(true)} />}
             {searchArea && <h3 onClick={() => {setSearchArea(false); props.searchFunction(null)}}>X</h3>}
-            {searchArea && <input type='text' placeholder='O que você procura?' onChange={e => props.searchFunction(e.target.value)} ></input>}
+            {searchArea && <input type='text' placeholder='O que você procura?' onChange={e => debounce(props.searchFunction, e.target.value, 1000)} ></input>}
             
             {!props.tipoAdmin && !searchArea && <Link to='/' onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo'}}>Tudo</Link>}
 

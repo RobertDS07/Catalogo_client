@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
+import debounce from '../utils/debounce'
+
 import whats from '../assets/whats.png'
 import insta from '../assets/instagram.png'
 
@@ -43,27 +45,26 @@ const NavResponsive = styled.nav`
         }
 `
 
-function clearSelected() {
-    let categorias = document.querySelector('#categorias')
-    categorias = Array.from(categorias.children)
-    categorias.forEach(element => {
-        element.children[0].classList.remove('selected')
-    })
-}
-function clearSelectedOrdenar() {
-    let ordenar = document.querySelector('#ordenar')
-    ordenar = Array.from(ordenar.children)
-    ordenar.forEach(element => {
-        element.classList.remove('selected')
-    })
-}
-
 export default props => {
+    function clearSelected() {
+        let categorias = document.querySelector('#categorias')
+        categorias = Array.from(categorias.children)
+        categorias.forEach(element => {
+            element.children[0].classList.remove('selected')
+        })
+    }
+    function clearSelectedOrdenar() {
+        let ordenar = document.querySelector('#ordenar')
+        ordenar = Array.from(ordenar.children)
+        ordenar.forEach(element => {
+            element.classList.remove('selected')
+        })
+    }
     return (
         <>
-            <input className='search' type='text' placeholder='O que você procura?' onChange={e => props.searchFunction(e.target.value)} ></input>
+            <input className='search' type='text' placeholder='O que você procura?' onChange={e => debounce(props.searchFunction, e.target.value, 1000)} ></input>
             <NavResponsive>
-                {!!props.tipo && !props.tipoAdmin &&
+                {!!props.tipo &&
                     <div id='content'>
                         <h1>Categorias</h1>
                         <div id='categorias'>
@@ -72,9 +73,9 @@ export default props => {
                         </div>
                         <h1>Ordenar por</h1>
                         <div id='ordenar'>
-                            <h3 className='margin selected' onClick={e => { props.setSort('tipo'); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Categorias</h3>
-                            <h3 className='margin' onClick={e => { props.setSort({ 'preço': 'asc' }); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Menor preço</h3>
-                            <h3 className='margin' onClick={e => { props.setSort({ 'preço': 'desc' }); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Maior preço</h3>
+                            <h3 className='margin selected' onClick={e => { props.setSort(false); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Categorias</h3>
+                            <h3 className='margin' onClick={e => { props.setSort('asc'); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Menor preço</h3>
+                            <h3 className='margin' onClick={e => { props.setSort('desc'); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Maior preço</h3>
                         </div>
                         <hr />
                         <a href='https://wa.me/5551989424940?text=Oii%20'>
@@ -86,7 +87,7 @@ export default props => {
                         <p>Horário de atendimento: De segunda a sábado das 10h ás 19h</p>
                     </div>
                 }
-                {!!props.tipoAdmin &&
+                {/* {!!props.tipoAdmin &&
                     <div id='content'>
                         <h1>Categorias</h1>
                         <div id='categorias'>
@@ -108,7 +109,7 @@ export default props => {
                         </a><br /><br />
                         <p>Horário de atendimento: De segunda a sábado das 10h ás 19h</p>
                     </div>
-                }
+                } */}
             </NavResponsive>
         </>
     )

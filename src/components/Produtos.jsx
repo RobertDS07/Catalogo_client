@@ -143,10 +143,11 @@ function produtos(props) {
                 {!props.search && !props.tipo && !!props.produtos && props.produtos.map(e =>
                     <Link key={e._id} to={'/' + e._id}>
                         <div className='content'>
-                            <img width='130' height='173' alt={e.nome} src={e.fotourl}></img>
+                            <img width='130' height='173' alt={e.name} src={e.fotourl}></img>
                             <div className='container'>
-                                <h3>{e.nome}</h3><br />
-                                <h5>R$ {e.preço}</h5>
+                                <h3>{e.name}</h3><br />
+                                <h5>R$ {e.price}</h5>
+                                <h5>R$ {e.category}</h5>
                             </div>
                         </div>
                     </Link>
