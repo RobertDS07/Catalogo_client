@@ -21,6 +21,19 @@ const GlobalStyles = createGlobalStyle`
     }
     #root{
       position: relative;
+
+      @media (min-width: 1400px) {
+        width: auto;
+        min-height: 100vh;
+        position: relative;
+        display: grid;
+        grid-template-rows: 75px 1fr 20px;
+        grid-template-columns: 0.3fr 270px 1fr 0.3fr;
+        grid-template-areas: 
+        "cabeçalho cabeçalho cabeçalho cabeçalho"
+        "nothing nav main morenothing"
+        "footer footer footer footer ";
+      }
     }
     .whats{
       position: fixed;
@@ -38,19 +51,6 @@ const GlobalStyles = createGlobalStyle`
     .logo{
       position: absolute;
       left: calc((100% - 65px)/2);
-    }
-    /* Creio que isso não seja uma boa prática, (mexer no root), mas tenho minhas dúvidas */
-    #root.responsive{
-      width: auto;
-      min-height: 100vh;
-      position: relative;
-      display: grid;
-      grid-template-rows: 75px 1fr 20px;
-      grid-template-columns: 0.3fr 270px 1fr 0.3fr;
-      grid-template-areas: 
-      "cabeçalho cabeçalho cabeçalho cabeçalho"
-      "nothing nav main morenothing"
-      "footer footer footer footer ";
     }
     .search{
       grid-column-start: 2;
@@ -78,13 +78,6 @@ const GlobalStyles = createGlobalStyle`
       color: grey;
     }
 `
-
-window.addEventListener('load', () => {
-  window.innerWidth >= 1400 ? document.querySelector('#root').classList.add('responsive') : document.querySelector('#root').classList.remove('responsive')
-})
-window.addEventListener('resize', () => {
-  window.innerWidth >= 1400 ? document.querySelector('#root').classList.add('responsive') : document.querySelector('#root').classList.remove('responsive')
-})
 
 function App() {
   return (
