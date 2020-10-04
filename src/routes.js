@@ -199,7 +199,7 @@ export default function () {
                 </Route>
             )}
 
-            {responsive && <footer><a href='https://twitter.com/bugextreme1'>Desenvolvido por Robert Damaceno</a></footer>}
+            {responsive && <footer><a href='https://twitter.com/bugextreme1' target="_blank" rel="noopener noreferrer">Desenvolvido por Robert Damaceno</a></footer>}
         </>
     )
 }
