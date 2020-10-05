@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import loading from '../assets/loading.svg'
+
+import loading from '../../assets/loading.svg'
 
 const Loading = styled.div`
     position: absolute;

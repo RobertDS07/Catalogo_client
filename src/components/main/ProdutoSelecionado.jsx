@@ -56,7 +56,7 @@ export default props => {
 
     return (
         <ProdutoSelecionado>
-            {!props.produtosAdmin && !!props.produtos &&
+            {!!props.produtos &&
                 <>
                     {imgWidth < 351 &&
                         <img src={props.produtos.fotourl} alt='Foto produto' width='140' height='173' />
@@ -76,7 +76,7 @@ export default props => {
                 </>
             }
 
-            {!!props.produtosAdmin &&
+            {/* {!!props.produtosAdmin &&
                 <>
                     <div className='img'>
                         {imgWidth < 351 &&
@@ -118,7 +118,7 @@ export default props => {
                         </form>
                     </div>
                 </>
-            }
+            } */}
         </ProdutoSelecionado>
     )
 }

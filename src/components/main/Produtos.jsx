@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { useContext } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Link } from 'react-router-dom'
 
@@ -136,11 +136,12 @@ const Produtos = styled.main`
 }
 `
 
-function produtos(props) {
+export default props => {
+
     return (
         <Produtos>
             <div className='catchContent'>
-                {!props.search && !props.tipo && !!props.produtos && props.produtos.map(e =>
+                {!!props.produtos && props.produtos.map(e =>
                     <Link key={e._id} to={'/' + e._id}>
                         <div className='content'>
                             <img width='130' height='173' alt={e.name} src={e.fotourl}></img>
@@ -152,50 +153,7 @@ function produtos(props) {
                         </div>
                     </Link>
                 )}
-
-                {!props.produtosAdmin && !props.tipo && !!props.search && props.search.map(e =>
-                    <Link key={e._id} to={'/' + e._id}>
-                        <div className='content'>
-                            <img width='130' height='173' alt={e.nome} src={e.fotourl}></img>
-                            <div className='container'>
-                                <h3>{e.nome}</h3><br />
-                                <h5>R$ {e.preço}</h5>
-                            </div>
-                        </div>
-                    </Link>
-                )}
-
-                {!props.produtosAdmin && !!props.produtos && !props.search && !!props.tipo && !!props.validateProducts && props.produtos.map(produto => props.validateProducts(produto, props.tipo))}
-                {!props.produtosAdmin && !props.searchAdmin && !!props.search && !props.produtos && !!props.tipo && !!props.validateProducts && props.search.map(produto => props.validateProducts(produto, props.tipo))}
-
-                {!!props.produtosAdmin && !props.searchAdmin && !props.tipoAdmin && props.produtosAdmin.map(e =>
-                    <Link key={e._id} to={'/admin/produto/' + e._id}>
-                        <div className='content'>
-                            <img width='130' height='173' alt={e.nome} src={e.fotourl} />
-                            <div className='container'>
-                                <h3>{e.nome}</h3><br />
-                                <h5>R$ {e.preço}</h5>
-                            </div>
-                        </div>
-                    </Link>
-                )}
-
-                {!props.produtosAdmin && !props.tipoAdmin && !!props.searchAdmin && props.searchAdmin.map(e =>
-                    <Link key={e._id} to={'/' + e._id}>
-                        <div className='content'>
-                            <img width='130' height='173' alt={e.nome} src={e.fotourl}></img>
-                            <div className='container'>
-                                <h3>{e.nome}</h3><br />
-                                <h5>R$ {e.preço}</h5>
-                            </div>
-                        </div>
-                    </Link>
-                )}
-                {!props.searchAdmin && !props.produtos && !!props.produtoAdmin && !!props.tipoAdmin && !!props.validateProducts && props.produtoAdmin.map(produto => props.validateProducts(produto, props.tipoAdmin))}
-                {!!props.searchAdmin && !props.produtoAdmin && !!props.tipoAdmin && !!props.validateProducts && props.searchAdmin.map(produto => props.validateProducts(produto, props.tipoAdmin))}
             </div>
         </Produtos>
     )
 }
-
-export default memo(produtos)

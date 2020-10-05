@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import debounce from '../utils/debounce'
+import debounce from '../../utils/debounce'
 
-import search from '../assets/search.png'
+import search from '../../assets/search.png'
 
 const ScrollNav = styled.div`
     width: auto;
@@ -62,17 +62,21 @@ export default props => {
 
     return (
         <ScrollNav>
-            {!searchArea && <img src={search} alt='Search' width='16' height='16' onClick={() => setSearchArea(true)} />}
-            {searchArea && <h3 onClick={() => {setSearchArea(false); props.searchFunction(null)}}>X</h3>}
-            {searchArea && <input type='text' placeholder='O que você procura?' onChange={e => debounce(props.searchFunction, e.target.value, 1000)} ></input>}
-            
-            {!props.tipoAdmin && !searchArea && <Link to='/' onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo'}}>Tudo</Link>}
+            {searchArea &&
+                <>
+                    <h3 onClick={() => { setSearchArea(false); props.searchFunction(null) }}>X</h3>
+                    <input type='text' placeholder='O que você procura?' onChange={e => debounce(props.searchFunction, e.target.value, 1000)} ></input>
+                </>
+            }
 
-            {!!props.tipo && !props.tipoAdmin && !searchArea && props.tipo.map(e => <Link key={e} onClick={() => { document.querySelector('.sort').children[0].innerHTML = e }} to={e}>{e}</Link>)}
+            {!searchArea &&
+                <>
+                    <img src={search} alt='Search' width='16' height='16' onClick={() => setSearchArea(true)} />
+                    <Link to='/' onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo'; props.setCategory(false)}}>Tudo</Link>
+                    {!!props.tipo && props.tipo.map(e => <Link key={e} onClick={() => { document.querySelector('.sort').children[0].innerHTML = e; props.setCategory(e)}} to={e}>{e}</Link>)}
+                </>
+            }
 
-            {!!props.tipoAdmin && !searchArea && <Link onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo' }} to='/admin/catalogo'>Tudo</Link>}
-
-            {!!props.tipoAdmin && !searchArea && props.tipoAdmin.map(e => <Link key={e} onClick={() => { document.querySelector('.sort').children[0].innerHTML = e }} to={'/admin/catalogo/' + e}>{e}</Link>)}
         </ScrollNav>
     )
 }

@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import {
     Route,
-    Link,
-    Redirect,
     Switch
 } from "react-router-dom";
 import axios from 'axios'
 
 import requestProducts from './utils/requestProducts'
 import showErrorMsg from './utils/showErrorMsg'
+import debounce from './utils/debounce';
 
-import Produtos from './components/Produtos'
-import ProdutoSelecionado from './components/ProdutoSelecionado'
-import Sort from './components/Sort'
-import Nav from './components/Nav'
-import A from './components/A'
-import ScrollNav from './components/ScollNav'
-import NavResponsive from './components/NavResponsive';
-import Loading from './components/Loading'
-import Error from './components/ErrorMsg'
+import Produtos from './components/main/Produtos'
+import ProdutoSelecionado from './components/main/ProdutoSelecionado'
+import Sort from './components/header/Sort'
+import Nav from './components/header/Nav'
+import A from './components/header/A'
+import ScrollNav from './components/header/ScollNav'
+import NavResponsive from './components/header/NavResponsive';
+
+import Loading from './components/utils/Loading'
+import Error from './components/utils/ErrorMsg'
 
 import Modal from './components/adminComponents/Modal'
 import Admin from './components/adminComponents/Admin'
@@ -28,13 +28,14 @@ import logo from './assets/logo.png'
 import arrowUp from './assets/arrowUp.png'
 
 export default function () {
-    const [sort, setSort] = useState(false)
-    // const [logged, setLogged] = useState(false)
-    const [produtos, setProdutos] = useState(false)
-    const [tipo, setTipo] = useState(false)
-
-    const [admin, setAdmin] = useState(false)
-    // const [produtoAdmin, setProdutoAdmin] = useState(false)
+    const [responsive, setResponsive] = useState(false)
+    const [sort, setSort] = useState()
+    const [search, setSearch] = useState()
+    const [category, setCategory] = useState()
+    const [data, setData] = useState('_id name price fotourl')
+    const [produtos, setProdutos] = useState([])
+    const [tipo, setTipo] = useState()
+    const [admin, setAdmin] = useState()
 
     useEffect(() => {
         if (!!localStorage.getItem('authorization')) {
@@ -55,7 +56,6 @@ export default function () {
                 if (admin) {
                     setAdmin(true)
                 }
-                // setLogged(true)
             })()
         }
 
@@ -73,63 +73,44 @@ export default function () {
         }
 
         (async () => {
-            const res = !sort ? await requestProducts() : await requestProducts(undefined, sort)
+            const res = await requestProducts(undefined, sort, search, category, data)
 
             if (!!res.data.errors) return showErrorMsg(res.data.errors[0].message)
 
             setProdutos(res.data.data.products)
         })()
-    }, [sort, admin])
+    }, [sort, admin, search, category, data])
 
-    function validateProducts(product, requiredType) {
-    //     if (admin) {
-    //         if (product.tipo === requiredType) {
-    //             return (
-    //                 <Link key={product._id} to={'/admin/produto/' + product._id}>
-    //                     <div className='content'>
-    //                         <img width='130' height='173' alt={product.nome} src={product.fotourl}></img>
-    //                         <div className='container'>
-    //                             <h3>{product.nome}</h3><br />
-    //                             <h5>{product.preço}</h5>
-    //                         </div>
-    //                     </div>
-    //                 </Link>
-    //             )
-    //         }
-    //     }
-    // }
-    if (product.category === requiredType) {
-        return (
-            <Link key={product._id} to={'/' + product._id}>
-                <div className='content'>
-                    <img width='130' height='173' alt={product.nome} src={product.fotourl}></img>
-                    <div className='container'>
-                        <h3>{product.nome}</h3><br />
-                        <h5>{product.preço}</h5>
-                    </div>
-                </div>
-            </Link>
-        )
-    }
-}
-
-    const [productsSearch, setProductsSearch] = useState(false)
     function searchFunction(t) {
-        let produtoToSearch = produtos
-        // !logged ? produtoToSearch = produtos : produtoToSearch = produtoAdmin
+        if (!t) return setSearch(false)
         const text = t.trim()
         if (text !== '' && text !== null && text !== undefined) {
-            setProductsSearch(produtoToSearch.filter(produto => {
-                if (produto.name.toLowerCase().includes(text.toLowerCase())) {
-                    return produto
-                }
-            }))
-        } else {
-            setProductsSearch(false)
+            setSearch(text)
         }
     }
 
-    const [responsive, setResponsive] = useState(false)
+    const infiniteScroll = async () => {
+        const wrapper = document.querySelector('.catchContent')
+
+        if (!wrapper) return false
+
+        const skip = wrapper.children.length
+
+        const res = await requestProducts(skip, sort, search, category, data)
+
+        if (!!res.data.errors) return showErrorMsg(res.data.errors[0].message)
+
+        setProdutos([...produtos, ...res.data.data.products])
+    }
+
+    document.addEventListener('scroll', async () => {
+        const allHeight = document.body.scrollHeight
+
+        if (window.scrollY + window.innerHeight > allHeight - 100) {
+            debounce(infiniteScroll, undefined, 750)
+        }
+    })
+
     window.addEventListener('load', () => window.innerWidth < 1400 ? setResponsive(false) : setResponsive(true))
     window.addEventListener('resize', () => window.innerWidth < 1400 ? setResponsive(false) : setResponsive(true))
 
@@ -157,12 +138,7 @@ export default function () {
             {!responsive &&
                 <>
                     <Nav>
-                        {!admin &&
-                            <ScrollNav searchFunction={searchFunction} tipo={tipo} />
-                        }
-                        {admin &&
-                            <ScrollNav searchFunction={searchFunction} tipo={tipo} />
-                        }
+                        <ScrollNav searchFunction={searchFunction} tipo={tipo} setCategory={setCategory} />
                     </Nav>
 
                     <Sort setSort={setSort}></Sort>
@@ -170,24 +146,19 @@ export default function () {
             }
 
             {responsive && !admin &&
-                <NavResponsive tipo={tipo} searchFunction={searchFunction} setSort={setSort} />
-            }
-            {responsive && admin &&
-                <NavResponsive tipo={tipo} searchFunction={searchFunction} setSort={setSort} />
+                <NavResponsive tipo={tipo} searchFunction={searchFunction} setSort={setSort} setCategory={setCategory} />
             }
 
             <Error />
 
             <Switch>
                 <Route exact path="/">
-                    {!productsSearch && !!produtos && <Produtos produtos={produtos} />}
-                    {!!productsSearch && <Produtos search={productsSearch} />}
+                    {!!produtos && <Produtos produtos={produtos} setProdutos={setProdutos} sort={sort} />}
                 </Route>
 
                 {!!tipo && !admin && tipo.map(tipo =>
                     <Route key={tipo} path={'/' + tipo} >
-                        {!productsSearch && <Produtos tipo={tipo} produtos={produtos} validateProducts={validateProducts} />}
-                        {!!productsSearch && <Produtos tipo={tipo} search={productsSearch} validateProducts={validateProducts} />}
+                        <Produtos produtos={produtos} setProdutos={setProdutos} infiniteScroll={sort, data, search, category} />
                     </Route>
                 )}
 
@@ -200,27 +171,6 @@ export default function () {
                 <Route exact path='/admin'>
                     <Admin setAdmin={setAdmin} admin={admin} />
                 </Route>
-
-                {/* <Route exact path='/admin/catalogo'>
-                    {!productsSearch && !!produtoAdmin && <Produtos produtosAdmin={produtoAdmin} />}
-                    {!!productsSearch && <Produtos searchAdmin={productsSearch} />}
-                    {!logged && window.localStorage === 0 && <Redirect to='/' />}
-                </Route>
-
-                {!!tipo && logged && tipo.map(tipo =>
-                    <Route key={tipo} path={'/admin/catalogo/' + tipo}>
-                        {!productsSearch && !!produtoAdmin && <Produtos produtoAdmin={produtoAdmin} tipoAdmin={tipo} validateProducts={validateProducts} />}
-                        {!!productsSearch && <Produtos tipoAdmin={tipo} searchAdmin={productsSearch} validateProducts={validateProducts} />}
-                        {!logged && window.localStorage === 0 && <Redirect to='/' />}
-                    </Route>
-                )}
-
-                {!!produtoAdmin && logged && produtoAdmin.map(e =>
-                    <Route key={e._id} path={'/admin/produto/' + e._id}>
-                        <ProdutoSelecionado produtosAdmin={e} />
-                        {!logged && window.localStorage === 0 && <Redirect to='/' />}
-                    </Route>
-                )} */}
 
                 <Route path='*'>
                     <h1>Não existe</h1>
