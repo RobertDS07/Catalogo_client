@@ -69,7 +69,7 @@ export default props => {
                         <h1>Categorias</h1>
                         <div id='categorias'>
                             <Link to='/'><h3 onClick={e => { clearSelected(); e.target.classList.add('selected'); props.setCategory(false) }} className='margin selected'>Tudo</h3></Link>
-                            {!!props.tipo && props.tipo.map(tipo => <Link key={tipo} to={tipo}><h3 onClick={e => { clearSelected(); e.target.classList.add('selected'); props.setCategory(tipo) }} className='margin' style={{textTransform: "capitalize"}}>{tipo}</h3></Link>)}
+                            {!!props.tipo && props.tipo.map(tipo => <Link key={tipo} to={tipo}><h3 onClick={e => { clearSelected(); e.target.classList.add('selected'); props.setCategory(tipo) }} className='margin' style={{ textTransform: "capitalize" }}>{tipo}</h3></Link>)}
                         </div>
                         <h1>Ordenar por</h1>
                         <div id='ordenar'>
@@ -78,11 +78,11 @@ export default props => {
                             <h3 className='margin' onClick={e => { props.setSort('desc'); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Maior preço</h3>
                         </div>
                         <hr />
-                        <a href='https://wa.me/5551989424940?text=Oii%20'>
-                            <img width='30' height='30' src={whats} alt="whatss" /> <h3>+55 51 989424940</h3>
+                        <a href={process.env.REACT_APP_WHATSMSG}>
+                            <img width='30' height='30' src={whats} alt={process.env.REACT_APP_WHATS} /> <h3>+55 {process.env.REACT_APP_WHATS}</h3>
                         </a><br />
-                        <a href='https://www.instagram.com/direto__do__closet/'>
-                            <img width='25' height='25' src={insta} alt="insta" /> <h3>@direto__do__closet</h3>
+                        <a href={process.env.REACT_APP_INSTALINK}>
+                            <img width='25' height='25' src={insta} alt={process.env.REACT_APP_INSTATXT} /> <h3>{process.env.REACT_APP_INSTATXT}</h3>
                         </a><br /><br />
                         <p>Horário de atendimento: De segunda a sábado das 10h ás 19h</p>
                     </div>

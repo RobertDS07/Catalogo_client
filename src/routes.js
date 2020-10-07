@@ -21,12 +21,12 @@ import NavResponsive from './components/header/NavResponsive';
 
 import Loading from './components/utils/Loading'
 import Error from './components/utils/ErrorMsg'
+import NotFound from './components/utils/NotFound404'
 
 import Modal from './components/adminComponents/Modal'
 import Admin from './components/adminComponents/Admin'
 
 import whats from './assets/whats.png'
-import logo from './assets/logo.png'
 import arrowUp from './assets/arrowUp.png'
 
 export default function () {
@@ -126,11 +126,11 @@ export default function () {
     return (
         <>
             {produtos.length === 0 && <Loading />}
-            <A link='https://www.instagram.com/direto__do__closet/' txt='@direto_do_closet' />
+            <A link={process.env.REACT_APP_INSTALINK} txt={process.env.REACT_APP_INSTATXT} />
 
             {!admin && window.innerWidth < 1400 &&
-                <a className='whats' href='https://wa.me/5551989424940?text=Oii%20'>
-                    <img src={whats} alt='51989424940' width='70' height='70' />
+                <a className='whats' href={process.env.REACT_APP_WHATSMSG}>
+                    <img src={whats} alt={process.env.REACT_APP_WHATS} width='70' height='70' />
                 </a>
             }
 
@@ -142,7 +142,7 @@ export default function () {
                 <Modal setAdmin={setAdmin} setCreated={setCreated} />
             }
 
-            <Link to='/' className='logo'><img alt='Direto_Do_Closet' src={logo} /></Link>
+            <Link to='/' className='logo'><img alt={process.env.REACT_APP_INSTATXT} src={process.env.REACT_APP_LOGO} /></Link>
 
             {!responsive &&
                 <>
@@ -183,7 +183,7 @@ export default function () {
                 </Route>
 
                 <Route path='*'>
-                    <h1>Não existe</h1>
+                    <NotFound/>
                 </Route>
             </Switch>
 
