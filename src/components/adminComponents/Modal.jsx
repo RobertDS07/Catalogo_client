@@ -59,7 +59,7 @@ export default props => {
         const {token, fotourl, price, name, description, size, category} = CatchInputsData(e)
         
         try{
-            const res = await Axios.post(process.env.API || 'http://localhost:8081/graphql', {
+            const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
                     mutation{
                         createProduct(token:"${token}" data:{fotourl: "${fotourl}" price: ${price} name: "${name}" description: "${description}" size: "${size}" category: "${category}"})

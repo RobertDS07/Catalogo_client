@@ -30,7 +30,7 @@ export default function (props) {
         const password = document.querySelector('#password').value
 
         try{
-        const res = await axios.post(process.env.API || 'http://localhost:8081/graphql', {
+        const res = await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
             query: `
                 {
                     login(email:"${email}", password:"${password}")

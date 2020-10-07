@@ -44,7 +44,7 @@ export default function () {
     useEffect(() => {
         if (!!localStorage.getItem('authorization')) {
             (async () => {
-                const res = await axios.post(process.env.API || 'http://localhost:8081/graphql', {
+                const res = await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                     query: `
                 {
                     verifyToken(token:"${localStorage.getItem('authorization')}") {
@@ -65,7 +65,7 @@ export default function () {
 
         if (!tipo || deleted || created) {
             (async () => {
-                const res = await axios.post(process.env.API || 'http://localhost:8081/graphql', {
+                const res = await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                     query: `
                 {
                     categories

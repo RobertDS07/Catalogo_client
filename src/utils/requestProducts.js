@@ -6,7 +6,7 @@ const products = async (skip, sort, search, category, data) => {
     if (!skip) skip = 0
     if (!search) search = ''
 
-    const res = !category ? !sort ? await axios.post(process.env.API || 'http://localhost:8081/graphql', {
+    const res = !category ? !sort ? await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
         query: `
             {
                 products(limit:${limit}, skip:${skip}, search:"${search}") {
@@ -14,7 +14,7 @@ const products = async (skip, sort, search, category, data) => {
                 }
             }
         `
-    }) : await axios.post(process.env.API || 'http://localhost:8081/graphql', {
+    }) : await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
         query: `
             {
                 products(limit:${limit}, sort:${sort}, skip:${skip}, search:"${search}") {
@@ -22,7 +22,7 @@ const products = async (skip, sort, search, category, data) => {
                 }
             }
         `
-    }) : !sort ? await axios.post(process.env.API || 'http://localhost:8081/graphql', {
+    }) : !sort ? await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
         query: `
             {
                 products(limit:${limit}, skip:${skip}, search:"${search}", category:"${category}") {
@@ -30,7 +30,7 @@ const products = async (skip, sort, search, category, data) => {
                 }
             }
         `
-    }) : await axios.post(process.env.API || 'http://localhost:8081/graphql', {
+    }) : await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
         query: `
             {
                 products(limit:${limit}, sort:${sort}, skip:${skip}, search:"${search}", category: "${category}") {

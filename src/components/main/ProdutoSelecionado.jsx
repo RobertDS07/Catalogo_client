@@ -88,7 +88,7 @@ export default props => {
         }
        
         try {
-            const res = await Axios.post(process.env.API || 'http://localhost:8081/graphql', {
+            const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
                     mutation{
                         updateProduct(token:"${localStorage.getItem('authorization')}" _id:"${props._id}" data:{${dataArray.map(e => e)}})
@@ -104,7 +104,7 @@ export default props => {
 
     const deleteProduct = async () => {
         try {
-            const res = await Axios.post(process.env.API || 'http://localhost:8081/graphql', {
+            const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
                     mutation{
                         deleteProduct(token:"${localStorage.getItem('authorization')}" _id:"${props._id}")
@@ -120,7 +120,7 @@ export default props => {
 
     useEffect(() => {
         (async () => {
-            const res = await Axios.post(process.env.API || 'http://localhost:8081/graphql', {
+            const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
                 {
                     product(_id:"${props._id}"){
