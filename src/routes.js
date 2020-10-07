@@ -125,7 +125,7 @@ export default function () {
 
     return (
         <>
-            {!produtos && <Loading />}
+            {produtos.length === 0 && <Loading />}
             <A link='https://www.instagram.com/direto__do__closet/' txt='@direto_do_closet' />
 
             {!admin && window.innerWidth < 1400 &&
