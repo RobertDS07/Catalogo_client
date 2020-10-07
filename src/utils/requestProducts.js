@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const products = async (skip, sort, search, category, data) => {
-    const limit = window.innerWidth < 836 ? 10 : 20
+    const hd4k = window.innerWidth > 2000 ? true : false
+    const limit = !hd4k ? window.innerWidth < 836 ? 10 : 20 : 30
 
     if (!skip) skip = 0
     if (!search) search = ''
