@@ -61,7 +61,7 @@ export default function () {
                     setAdmin(true)
                 }
             })()
-        }
+        } 
 
         if (!tipo || deleted || created) {
             (async () => {
