@@ -1,6 +1,8 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Link } from 'react-router-dom'
+
+import formatter from '../../utils/formatter'
 
 const animation = keyframes`
     0%{
@@ -137,7 +139,6 @@ const Produtos = styled.main`
 `
 
 export default props => {
-
     return (
         <Produtos>
             <div className='catchContent'>
@@ -146,9 +147,8 @@ export default props => {
                         <div className='content'>
                             <img width='130' height='173' alt={e.name} src={e.fotourl}></img>
                             <div className='container'>
-                                <h3>{e.name}</h3><br />
-                                <h5>R$ {e.price}</h5>
-                                <h5>R$ {e.category}</h5>
+                                <h3 style={{textTransform:"uppercase"}}>{e.name}</h3><br />
+                                <h5>{formatter.format(e.price)}</h5>
                             </div>
                         </div>
                     </Link>

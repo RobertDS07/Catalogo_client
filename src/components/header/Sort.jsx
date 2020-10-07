@@ -112,7 +112,7 @@ export default props => {
     return (
         <Sort>
             <div className='sort left'>
-                <p className='bold'>Tudo</p>
+                <p className='bold' style={{textTransform:"capitalize"}}>Tudo</p>
             </div>
             <div className='sort' onClick={() => setVisible(true)}>
                 <p>Ordenar por</p>

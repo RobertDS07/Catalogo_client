@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
-import { Redirect } from 'react-router-dom'
+
+import showErrorFunction from '../../utils/showErrorMsg'
 
 const Admin = styled.div`
     width: 100%;
@@ -24,34 +25,34 @@ const Admin = styled.div`
 `
 
 export default function (props) {
-    function login() {
-        const user = document.querySelector('#user').value
+    const login = async () => {
+        const email = document.querySelector('#email').value
         const password = document.querySelector('#password').value
 
-        const token = async () => await axios.post('https://catalogo-server.herokuapp.com/auth', {
-            user: user,
-            password: password
+        try{
+        const res = await axios.post(process.env.API || 'http://localhost:8081/graphql', {
+            query: `
+                {
+                    login(email:"${email}", password:"${password}")
+                }
+                `
         })
 
-        token().then(res => {
-            if (res.status === 401) {
-                console.log(res)
-            } else {
-                window.localStorage.setItem('authorization', res.data)
-                return setTimeout(() => props.setLogged(true), 1000) 
-            } 
-        })
+        localStorage.setItem('authorization', res.data.data.login)
+
+        return props.setAdmin(true)
+    } catch(e) {
+        return showErrorFunction(e.response.data.errors[0].message)
     }
-
+}
     return (
         <Admin>
             <div>
-                <label htmlFor="user">Usuário:</label>
-                <input type="text" name="user" id="user" /><br />
+                <label htmlFor="email">Usuário:</label>
+                <input type="text" name="email" id="email" autoFocus /><br />
                 <label htmlFor="password">Senha:</label>
                 <input type="password" name="password" id="password" onKeyDown={e => e.key === 'Enter' ? login() : ''} /><br />
                 <button type="submit" onClick={() => login()}>Logar</button>
-                {props.logged && <Redirect to='/admin/catalogo' />}
             </div>
         </Admin>
     )

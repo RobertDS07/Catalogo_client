@@ -1,11 +1,11 @@
 const showErrorFunction = (message) => {
-    const error = document.querySelector('#errorMsg')
-    error.children[0].innerHTML = message
+    const error = document.querySelector('.errorMsg')
+    error.innerHTML = message
     error.classList.add('show')
 
     setTimeout(() => {
         error.classList.remove('show')
-        error.children[0].innerHTML = ''
+        error.innerHTML = ''
     }, 4000)
 }
 

@@ -16,6 +16,9 @@ const GlobalStyles = createGlobalStyle`
     body{
       font-family: 'Mulish', sans-serif;
     }
+    input{
+      outline: none;
+    }
     #root{
       position: relative;
 
@@ -60,6 +63,7 @@ const GlobalStyles = createGlobalStyle`
       background-repeat: no-repeat;
       background-size: 18px;
       padding-left: 20px;
+      outline: none;
     }
     footer{
       position: absolute;

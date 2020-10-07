@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
+    Link,
+    Redirect,
     Route,
     Switch
 } from "react-router-dom";
@@ -36,6 +38,8 @@ export default function () {
     const [produtos, setProdutos] = useState([])
     const [tipo, setTipo] = useState()
     const [admin, setAdmin] = useState()
+    const [deleted, setDeleted] = useState(false)
+    const [created, setCreated] = useState(false)
 
     useEffect(() => {
         if (!!localStorage.getItem('authorization')) {
@@ -59,7 +63,7 @@ export default function () {
             })()
         }
 
-        if (!tipo) {
+        if (!tipo || deleted || created) {
             (async () => {
                 const res = await axios.post(process.env.API || 'http://localhost:8081/graphql', {
                     query: `
@@ -73,13 +77,18 @@ export default function () {
         }
 
         (async () => {
-            const res = await requestProducts(undefined, sort, search, category, data)
+            try {
+                const res = await requestProducts(undefined, sort, search, category, data)
 
-            if (!!res.data.errors) return showErrorMsg(res.data.errors[0].message)
+                setProdutos(res.data.data.products)
 
-            setProdutos(res.data.data.products)
+                !!created && setCreated(false)
+                !!deleted && setDeleted(false)
+            } catch (e) {
+                return showErrorMsg(e.response.data.errors[0].message)
+            }
         })()
-    }, [sort, admin, search, category, data])
+    }, [sort, admin, search, category, data, deleted, created])
 
     function searchFunction(t) {
         if (!t) return setSearch(false)
@@ -116,7 +125,7 @@ export default function () {
 
     return (
         <>
-            {!tipo && <Loading />}
+            {!produtos && <Loading />}
             <A link='https://www.instagram.com/direto__do__closet/' txt='@direto_do_closet' />
 
             {!admin && window.innerWidth < 1400 &&
@@ -130,10 +139,10 @@ export default function () {
             }
 
             {admin &&
-                <Modal setAdmin={setAdmin} />
+                <Modal setAdmin={setAdmin} setCreated={setCreated} />
             }
 
-            <img className='logo' alt='Direto_Do_Closet' src={logo} />
+            <Link to='/' className='logo'><img alt='Direto_Do_Closet' src={logo} /></Link>
 
             {!responsive &&
                 <>
@@ -145,7 +154,7 @@ export default function () {
                 </>
             }
 
-            {responsive && !admin &&
+            {responsive &&
                 <NavResponsive tipo={tipo} searchFunction={searchFunction} setSort={setSort} setCategory={setCategory} />
             }
 
@@ -153,23 +162,24 @@ export default function () {
 
             <Switch>
                 <Route exact path="/">
-                    {!!produtos && <Produtos produtos={produtos} setProdutos={setProdutos} sort={sort} />}
+                    {!!produtos && <Produtos produtos={produtos} />}
                 </Route>
 
-                {!!tipo && !admin && tipo.map(tipo =>
+                {!!tipo && tipo.map(tipo =>
                     <Route key={tipo} path={'/' + tipo} >
-                        <Produtos produtos={produtos} setProdutos={setProdutos} infiniteScroll={sort, data, search, category} />
+                        <Produtos produtos={produtos} />
                     </Route>
                 )}
 
                 {!!produtos && produtos.map(e =>
                     <Route key={e._id} path={'/' + e._id}>
-                        <ProdutoSelecionado produtos={e} />
+                        <ProdutoSelecionado _id={e._id} admin={admin} deleted={deleted} setDeleted={setDeleted} />
                     </Route>
                 )}
 
                 <Route exact path='/admin'>
-                    <Admin setAdmin={setAdmin} admin={admin} />
+                    {!!admin && <Redirect to='/' />}
+                    <Admin setAdmin={setAdmin} />
                 </Route>
 
                 <Route path='*'>

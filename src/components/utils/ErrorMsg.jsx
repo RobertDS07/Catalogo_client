@@ -11,7 +11,7 @@ const animation = keyframes`
 `
 
 const Error = styled.div `
-    width: 40%;
+    width: auto;
     height: 50px;
     background: #ff3333;
     text-align: center;
@@ -25,5 +25,5 @@ const Error = styled.div `
     }
 `
 
-export default props => 
-    <Error id='errorMsg'></Error>
+export default () => 
+    <Error className='errorMsg'></Error>

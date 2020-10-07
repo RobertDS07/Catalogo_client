@@ -46,14 +46,14 @@ const NavResponsive = styled.nav`
 `
 
 export default props => {
-    function clearSelected() {
+    const clearSelected = () => {
         let categorias = document.querySelector('#categorias')
         categorias = Array.from(categorias.children)
         categorias.forEach(element => {
             element.children[0].classList.remove('selected')
         })
     }
-    function clearSelectedOrdenar() {
+    const clearSelectedOrdenar = () => {
         let ordenar = document.querySelector('#ordenar')
         ordenar = Array.from(ordenar.children)
         ordenar.forEach(element => {
@@ -69,7 +69,7 @@ export default props => {
                         <h1>Categorias</h1>
                         <div id='categorias'>
                             <Link to='/'><h3 onClick={e => { clearSelected(); e.target.classList.add('selected'); props.setCategory(false) }} className='margin selected'>Tudo</h3></Link>
-                            {!!props.tipo && props.tipo.map(tipo => <Link key={tipo} to={tipo}><h3 onClick={e => { clearSelected(); e.target.classList.add('selected'); props.setCategory(tipo) }} className='margin'>{tipo}</h3></Link>)}
+                            {!!props.tipo && props.tipo.map(tipo => <Link key={tipo} to={tipo}><h3 onClick={e => { clearSelected(); e.target.classList.add('selected'); props.setCategory(tipo) }} className='margin' style={{textTransform: "capitalize"}}>{tipo}</h3></Link>)}
                         </div>
                         <h1>Ordenar por</h1>
                         <div id='ordenar'>
