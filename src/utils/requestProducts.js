@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const products = async (skip, sort, search, category, data) => {
+const products = async (skip, sort, search, category) => {
     const hd4k = window.innerWidth > 2000 ? true : false
     const limit = !hd4k ? window.innerWidth < 836 ? 10 : 20 : 30
 
@@ -11,7 +11,10 @@ const products = async (skip, sort, search, category, data) => {
         query: `
             {
                 products(limit:${limit}, skip:${skip}, search:"${search}") {
-                    ${data}
+                    _id
+                    name
+                    price
+                    fotourl
                 }
             }
         `
@@ -19,7 +22,10 @@ const products = async (skip, sort, search, category, data) => {
         query: `
             {
                 products(limit:${limit}, sort:${sort}, skip:${skip}, search:"${search}") {
-                    ${data}
+                    _id
+                    name
+                    price
+                    fotourl
                 }
             }
         `
@@ -27,7 +33,10 @@ const products = async (skip, sort, search, category, data) => {
         query: `
             {
                 products(limit:${limit}, skip:${skip}, search:"${search}", category:"${category}") {
-                    ${data}
+                    _id
+                    name
+                    price
+                    fotourl
                 }
             }
         `
@@ -35,7 +44,10 @@ const products = async (skip, sort, search, category, data) => {
         query: `
             {
                 products(limit:${limit}, sort:${sort}, skip:${skip}, search:"${search}", category: "${category}") {
-                    ${data}
+                    _id
+                    name
+                    price
+                    fotourl
                 }
             }
         `

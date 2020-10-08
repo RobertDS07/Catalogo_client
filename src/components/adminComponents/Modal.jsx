@@ -23,6 +23,15 @@ const Modal = styled.div`
         label{
             color: white;
         }
+
+        .preview{
+            border-radius: 10px;
+            margin: 8px;
+            display: none;
+        }
+        .preview.show{
+            display: inline;
+        }
 `
 
 const Circle = styled.div`
@@ -89,6 +98,16 @@ export default props => {
         }
     }
 
+    const previewPhoto = (e) => {
+        const previewEl = document.querySelector('.preview')
+
+        if(!e.target.value) return false
+
+        previewEl.classList.add('show')
+
+        previewEl.src = e.target.value
+    }
+
     return (
         <>
             <Circle onClick={() => setVisible(true)}>+</Circle>
@@ -97,7 +116,8 @@ export default props => {
                 <Modal id='modal' onClick={e => e.target.id === 'modal' && setVisible(false) }>
                     <form onSubmit={e => createProduct(e)}>
                         <label htmlFor="fotourl">URL da foto:</label>
-                        <input type="text" name="fotourl" id="fotourl" required placeholder='EX: http://link.png .jpg ...' />
+                        <input type="text" name="fotourl" id="fotourl" required placeholder='EX: http://link.png .jpg ...' onBlur={previewPhoto} />
+                        <img src="" className='preview' width='130px' height='173px'/>
                         <label htmlFor="name">Nome:</label>
                         <input type="text" name="name" required id="name" />
                         <label htmlFor="price">Preço:</label>

@@ -33,7 +33,6 @@ export default function () {
     const [sort, setSort] = useState()
     const [search, setSearch] = useState()
     const [category, setCategory] = useState()
-    const [data, setData] = useState('_id name price fotourl')
     const [produtos, setProdutos] = useState([])
     const [tipo, setTipo] = useState()
     const [admin, setAdmin] = useState()
@@ -77,7 +76,7 @@ export default function () {
 
         (async () => {
             try {
-                const res = await requestProducts(undefined, sort, search, category, data)
+                const res = await requestProducts(undefined, sort, search, category)
 
                 if(res.data.data.products.length === 0) return showErrorMsg('Nenhum item encontrado!', 'error')
 
@@ -89,7 +88,7 @@ export default function () {
                 return showErrorMsg(e.response.data.errors[0].message)
             }
         })()
-    }, [sort, admin, search, category, data, deleted, created])
+    }, [sort, admin, search, category, deleted, created])
 
     function searchFunction(t) {
         if (!t) return setSearch(false)
@@ -106,7 +105,7 @@ export default function () {
 
         const skip = wrapper.children.length
 
-        const res = await requestProducts(skip, sort, search, category, data)
+        const res = await requestProducts(skip, sort, search, category)
 
         if (!!res.data.errors) return showErrorMsg(res.data.errors[0].message)
 
