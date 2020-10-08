@@ -55,6 +55,7 @@ const NavResponsive = styled.nav`
         }
         .whatsIcon h3{
             padding-top: 6px; 
+            padding-left: 7px;
             grid-area: number;
         }
         .insta{
@@ -71,6 +72,7 @@ const NavResponsive = styled.nav`
         }
         .insta h3{
             padding-top: 3px;
+            padding-left: 7px;
             font-size: 1rem;
             grid-area: number;
         }

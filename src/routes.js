@@ -79,6 +79,8 @@ export default function () {
             try {
                 const res = await requestProducts(undefined, sort, search, category, data)
 
+                if(res.data.data.products.length === 0) return showErrorMsg('Nenhum item encontrado!', 'error')
+
                 setProdutos(res.data.data.products)
 
                 !!created && setCreated(false)
@@ -91,7 +93,7 @@ export default function () {
 
     function searchFunction(t) {
         if (!t) return setSearch(false)
-        const text = t.trim()
+        const text = t.trim().toLowerCase()
         if (text !== '' && text !== null && text !== undefined) {
             setSearch(text)
         }
