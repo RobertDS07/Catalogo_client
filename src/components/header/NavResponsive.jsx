@@ -35,9 +35,44 @@ const NavResponsive = styled.nav`
         hr{
             margin: 25px 0 25px 0;
         }
-        img{
-            float: left;
-            margin-right: 15px;
+        .wrapperSocialMedia{
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            grid-template-columns: 1fr;
+            grid-template-areas: 
+            "whats"
+            "insta";
+        }
+        .whatsIcon{
+            grid-area: whats;
+            display: grid;
+            grid-template-columns: 30px 1fr;
+            grid-template-areas:
+            "icon number";
+        }
+        .whatsIcon img{
+            grid-area: icon;
+        }
+        .whatsIcon h3{
+            padding-top: 6px; 
+            grid-area: number;
+        }
+        .insta{
+            display: grid;
+            grid-template-columns: 30px 1fr;
+            grid-template-areas:
+            "icon number";
+            grid-area: insta;
+        }
+        .insta img{
+            padding-left: 5px;
+            padding-top: 5px;
+            grid-area: icon;
+        }
+        .insta h3{
+            padding-top: 3px;
+            font-size: 1rem;
+            grid-area: number;
         }
         p{
             font-weight: 600;
@@ -78,12 +113,15 @@ export default props => {
                             <h3 className='margin' onClick={e => { props.setSort('desc'); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Maior preço</h3>
                         </div>
                         <hr />
-                        <a href={process.env.REACT_APP_WHATSMSG}>
-                            <img width='30' height='30' src={whats} alt={process.env.REACT_APP_WHATS} /> <h3>+55 {process.env.REACT_APP_WHATS}</h3>
-                        </a><br />
-                        <a href={process.env.REACT_APP_INSTALINK}>
-                            <img width='25' height='25' src={insta} alt={process.env.REACT_APP_INSTATXT} /> <h3>{process.env.REACT_APP_INSTATXT}</h3>
-                        </a><br /><br />
+                        <div className="wrapperSocialMedia">
+                            <a className='whatsIcon'href={process.env.REACT_APP_WHATSMSG}>
+                                <img width='30' height='30' src={whats} alt={process.env.REACT_APP_WHATS} /> <h3>+55 {process.env.REACT_APP_WHATS}</h3>
+                            </a>
+                            <a className='insta' href={process.env.REACT_APP_INSTALINK}>
+                                <img width='20' height='20' src={insta} alt={process.env.REACT_APP_INSTATXT} /> <h3>{process.env.REACT_APP_INSTATXT}</h3>
+                            </a>
+                        </div>
+                        <br /><br />
                         <p>Horário de atendimento: De segunda a sábado das 10h ás 19h</p>
                     </div>
                 }

@@ -4,6 +4,8 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 import Routes from './routes'
 
+import Msg from './components/utils/ErrorMsg'
+
 import search from '../src/assets/search.png'
 
 const GlobalStyles = createGlobalStyle`
@@ -84,6 +86,8 @@ function App() {
   return (
     <>
       <GlobalStyles />
+
+      <Msg />
       <Router>
         <Routes />
       </Router>

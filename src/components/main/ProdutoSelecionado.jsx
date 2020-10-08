@@ -32,12 +32,6 @@ const ProdutoSelecionado = styled.main`
         height: auto;
         position:relative;
         }
-        .img button{
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            border: none;
-        }
         .form{
             position: absolute;
             top: 0;
@@ -57,7 +51,13 @@ const ProdutoSelecionado = styled.main`
         }
         .deleteProduct {
             position: absolute;
+            border-radius: 50%;
             right: 0;
+            cursor: pointer;
+            outline: none;
+            width: 50px;
+            height: 50px;
+            border: none;
         }
         @media(min-width: 1400px) {
             grid-area: main;
@@ -86,7 +86,7 @@ export default props => {
                 dataArray.push(`${property}: ${data[property]}`)
             }
         }
-       
+
         try {
             const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
@@ -96,7 +96,10 @@ export default props => {
                     `
             })
 
-            if (res.data.data.updateProduct) return props.setDeleted(true)
+            if (res.data.data.updateProduct){
+                showErrorFunction('Produto modoficado com sucesso', 'success')
+                return props.setDeleted(true)  
+            } 
         } catch (e) {
             return showErrorFunction(e.response.data.errors[0].message)
         }
@@ -112,7 +115,10 @@ export default props => {
                     `
             })
 
-            if (res.data.data.deleteProduct) return props.setDeleted(true)
+            if (res.data.data.deleteProduct) {
+                showErrorFunction('Produto deletado com sucesso', 'success')
+                return props.setDeleted(true)
+            }
         } catch (e) {
             return showErrorFunction(e.response.data.errors[0].message)
         }
@@ -156,7 +162,7 @@ export default props => {
                         <img src={product.fotourl} alt='Foto produto' width='400' height='533' />
                     }
                     {props.admin &&
-                        <button className='deleteProduct' onClick={() => deleteProduct()}>X</button>
+                        <button className='deleteProduct' onClick={deleteProduct}>X</button>
                     }
 
                     <div>

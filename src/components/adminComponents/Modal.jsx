@@ -56,24 +56,36 @@ export default props => {
 
         button.disable = true
 
-        const {token, fotourl, price, name, description, size, category} = CatchInputsData(e)
+        const data = CatchInputsData(e)
+
+        const dataArray = []
+
+        for (const property in data) {
+            data[property] === undefined && delete data[property]
+
+            if (property !== 'price') {
+                dataArray.push(`${property}: "${data[property]}"`)
+            } else {
+                dataArray.push(`${property}: ${data[property]}`)
+            }
+        }
         
         try{
             const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
                     mutation{
-                        createProduct(token:"${token}" data:{fotourl: "${fotourl}" price: ${price} name: "${name}" description: "${description}" size: "${size}" category: "${category}"})
+                        createProduct(token:"${window.localStorage.getItem('authorization')}" data:{${dataArray.map(e => e)}})
                     }
                     `
             })
             if(res.data.data.createProduct) {
+                showErrorFunction('Produto criado com sucesso', 'success')
                 setVisible(false)
                 props.setCreated(true)
             }
-            //adicionar uma msg de sucesso e arrumar a msg de erro deixar mais bonita
         } catch (e) {
             button.disable = false
-            return showErrorFunction(e.response.data.errors[0].message)
+            return showErrorFunction(e.response.data.errors[0].message, 'error')
         }
     }
 
@@ -85,18 +97,17 @@ export default props => {
                 <Modal id='modal' onClick={e => e.target.id === 'modal' && setVisible(false) }>
                     <form onSubmit={e => createProduct(e)}>
                         <label htmlFor="fotourl">URL da foto:</label>
-                        <input type="text" name="fotourl" id="fotourl" placeholder='EX: http://link.png .jpg ...' />
+                        <input type="text" name="fotourl" id="fotourl" required placeholder='EX: http://link.png .jpg ...' />
                         <label htmlFor="name">Nome:</label>
-                        <input type="text" name="name" id="name" />
+                        <input type="text" name="name" required id="name" />
                         <label htmlFor="price">Preço:</label>
-                        <input type="number" name="price" id="price" step='any' placeholder='EX: 40.00 (sem R$ e , )' />
+                        <input type="number" name="price" id="price" required step='any' placeholder='EX: 40.00 (sem R$ e , )' />
                         <label htmlFor="size">Tamanho:</label>
-                        <input type="text" name="size" id="size" placeholder='M/GG' />
+                        <input type="text" name="size" required id="size" placeholder='M/GG' />
                         <label htmlFor="description">Descrição do produto:</label>
                         <input type="text" name="description" id="description" />
                         <label htmlFor="category">Categoria:</label>
-                        <input type="text" name="category" id="category" /><br />
-                        <input type="hidden" name="token" value={window.localStorage.getItem('authorization')} />
+                        <input type="text" name="category" required id="category" /><br />
                         <button type="submit" id='submit'>Cadastrar produto</button>
                     </form>
                 </Modal>

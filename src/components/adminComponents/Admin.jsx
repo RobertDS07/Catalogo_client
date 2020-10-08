@@ -42,7 +42,7 @@ export default function (props) {
 
         return props.setAdmin(true)
     } catch(e) {
-        return showErrorFunction(e.response.data.errors[0].message)
+        return showErrorFunction(e.response.data.errors[0].message, 'error')
     }
 }
     return (

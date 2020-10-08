@@ -20,7 +20,6 @@ import ScrollNav from './components/header/ScollNav'
 import NavResponsive from './components/header/NavResponsive';
 
 import Loading from './components/utils/Loading'
-import Error from './components/utils/ErrorMsg'
 import NotFound from './components/utils/NotFound404'
 
 import Modal from './components/adminComponents/Modal'
@@ -157,8 +156,6 @@ export default function () {
             {responsive &&
                 <NavResponsive tipo={tipo} searchFunction={searchFunction} setSort={setSort} setCategory={setCategory} />
             }
-
-            <Error />
 
             <Switch>
                 <Route exact path="/">
