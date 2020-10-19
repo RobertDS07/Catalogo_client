@@ -11,24 +11,27 @@ import requestProducts from './utils/requestProducts'
 import showErrorMsg from './utils/showErrorMsg'
 import debounce from './utils/debounce';
 
-import Produtos from './components/main/Produtos'
-import ProdutoSelecionado from './components/main/ProdutoSelecionado'
-import Sort from './components/header/Sort'
-import Nav from './components/header/Nav'
-import A from './components/header/A'
-import ScrollNav from './components/header/ScollNav'
-import NavResponsive from './components/header/NavResponsive';
+import Produtos from './components/store/products/Produtos'
+import ProdutoSelecionado from './components/store/products/ProdutoSelecionado'
+import Sort from './components/store/header/Sort'
+import Nav from './components/store/header/Nav'
+import A from './components/store/header/A'
+import ScrollNav from './components/store/header/ScollNav'
+import NavResponsive from './components/store/header/NavResponsive';
 
 import Loading from './components/utils/Loading'
 import NotFound from './components/utils/NotFound404'
 
-import Modal from './components/adminComponents/Modal'
-import Admin from './components/adminComponents/Admin'
+import Modal from './components/store/adminComponents/Modal'
+import Admin from './components/store/adminComponents/Admin'
 
 import whats from './assets/whats.png'
 import arrowUp from './assets/arrowUp.png'
+import Store from './components/store/Main';
 
 export default function () {
+    const [storeNamesToLink, setStoreNamesToLink] = useState()
+
     const [responsive, setResponsive] = useState(false)
     const [sort, setSort] = useState()
     const [search, setSearch] = useState()
@@ -40,54 +43,71 @@ export default function () {
     const [created, setCreated] = useState(false)
 
     useEffect(() => {
-        if (!!localStorage.getItem('authorization')) {
-            (async () => {
+        (async () => {
+            try {
                 const res = await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                     query: `
                 {
-                    verifyToken(token:"${localStorage.getItem('authorization')}") {
-                        admin
+                    storeNamesToLink{
+                        storeNameToLink
                     }
                 }
                 `
                 })
-                if (!res.data.data.verifyToken) return setAdmin(false)
-
-                const { admin } = res.data.data.verifyToken
-
-                if (admin) {
-                    setAdmin(true)
-                }
-            })()
-        } 
-
-        if (!tipo || deleted || created) {
-            (async () => {
-                const res = await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
-                    query: `
-                {
-                    categories
-                }
-                `
-                })
-                setTipo(res.data.data.categories)
-            })()
-        }
-
-        (async () => {
-            try {
-                const res = await requestProducts(undefined, sort, search, category)
-
-                if(res.data.data.products.length === 0) return showErrorMsg('Nenhum item encontrado!', 'error')
-
-                setProdutos(res.data.data.products)
-
-                !!created && setCreated(false)
-                !!deleted && setDeleted(false)
+                setStoreNamesToLink(res.data.data.storeNamesToLink)
             } catch (e) {
                 return showErrorMsg(e.response.data.errors[0].message)
             }
         })()
+
+        // if (!!localStorage.getItem('authorization')) {
+        //     (async () => {
+        //         const res = await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
+        //             query: `
+        //         {
+        //             verifyToken(token:"${localStorage.getItem('authorization')}") {
+        //                 admin
+        //             }
+        //         }
+        //         `
+        //         })
+        //         if (!res.data.data.verifyToken) return setAdmin(false)
+
+        //         const { admin } = res.data.data.verifyToken
+
+        //         if (admin) {
+        //             setAdmin(true)
+        //         }
+        //     })()
+        // } 
+
+        // if (!tipo || deleted || created) {
+        //     (async () => {
+        //         const res = await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
+        //             query: `
+        //         {
+        //             categories
+        //         }
+        //         `
+        //         })
+        //         setTipo(res.data.data.categories)
+        //     })()
+        // }
+
+        // (async () => {
+        //     try {
+        //         const res = await requestProducts(undefined, sort, search, category)
+
+        //         if(res.data.data.products.length === 0) return showErrorMsg('Nenhum item encontrado!', 'error')
+
+        //         setProdutos(res.data.data.products)
+
+        //         !!created && setCreated(false)
+        //         !!deleted && setDeleted(false)
+        //     } catch (e) {
+        //         return showErrorMsg(e.response.data.errors[0].message)
+        //     }
+        // })()
     }, [sort, admin, search, category, deleted, created])
 
     function searchFunction(t) {
@@ -163,6 +183,12 @@ export default function () {
                     {!!produtos && <Produtos produtos={produtos} />}
                 </Route>
 
+                {!!storeNamesToLink && storeNamesToLink.map(storeName =>
+                    <Route key={storeName.storeNameToLink} path={`/${storeName.storeNameToLink}`}>
+                        <Store storeName={storeName.storeNameToLink}></Store>
+                    </Route>
+                )}
+
                 {!!tipo && tipo.map(tipo =>
                     <Route key={tipo} path={'/' + tipo} >
                         <Produtos produtos={produtos} />
@@ -181,7 +207,7 @@ export default function () {
                 </Route>
 
                 <Route path='*'>
-                    <NotFound/>
+                    <NotFound />
                 </Route>
             </Switch>
 
