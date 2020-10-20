@@ -91,7 +91,7 @@ export default props => {
             const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
                     mutation{
-                        updateProduct(token:"${localStorage.getItem('authorization')}" _id:"${props._id}" data:{${dataArray.map(e => e)}})
+                        updateProduct(token:"${localStorage.getItem('authorization')}" storeName:"${props.storeName}" id:"${props.id}" data:{${dataArray.map(e => e)}})
                     }
                     `
             })
@@ -110,7 +110,7 @@ export default props => {
             const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
                     mutation{
-                        deleteProduct(token:"${localStorage.getItem('authorization')}" _id:"${props._id}")
+                        deleteProduct(token:"${localStorage.getItem('authorization')}" storeName:"${props.storeName}" id:"${props.id}")
                     }
                     `
             })
@@ -129,7 +129,7 @@ export default props => {
             const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
                 {
-                    product(_id:"${props._id}"){
+                    getProduct(id:${props.id} storeName:"${props.storeName}"){
                         fotourl
                         name
                         price
@@ -139,7 +139,7 @@ export default props => {
                 }
                 `
             })
-            setProduct(res.data.data.product)
+            setProduct(res.data.data.getProduct)
         })()
     }, [])
 
@@ -148,7 +148,7 @@ export default props => {
         <ProdutoSelecionado>
             {!product && <Loading />}
 
-            {props.deleted && <Redirect to='/' />}
+            {props.deleted && <Redirect to={`/${props.storeName}`} />}
 
             {!!product &&
                 <div className='selectedProductWrapper'>

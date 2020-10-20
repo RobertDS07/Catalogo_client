@@ -143,7 +143,7 @@ export default props => {
         <Produtos>
             <div className='catchContent'>
                 {!!props.produtos && props.produtos.map(e =>
-                    <Link key={e._id} to={'/' + e._id}>
+                    <Link key={e.id} to={`/${props.storeName}/product/${e.id}`}>
                         <div className='content'>
                             <img width='130' height='173' alt={e.name} src={e.fotourl}></img>
                             <div className='container'>

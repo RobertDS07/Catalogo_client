@@ -72,8 +72,8 @@ export default props => {
             {!searchArea &&
                 <>
                     <img src={search} alt='Search' width='16' height='16' onClick={() => setSearchArea(true)} />
-                    <Link to='/' onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo'; props.setCategory(false)}}>Tudo</Link>
-                    {!!props.tipo && props.tipo.map(e => <Link key={e} style={{textTransform: "capitalize"}} onClick={() => { document.querySelector('.sort').children[0].innerHTML = e; props.setCategory(e)}} to={e}>{e}</Link>)}
+                    <Link to={`/${props.storeName}`} onClick={() => { document.querySelector('.sort').children[0].innerHTML = 'Tudo'; props.setThisCategory(false)}}>Tudo</Link>
+                    {!!props.tipo && props.tipo.map(e => <Link key={`/${props.storeName}/category/${e.category}`} style={{textTransform: "capitalize"}} onClick={() => { document.querySelector('.sort').children[0].innerHTML = e.category; props.setThisCategory(e.category)}} to={`/${props.storeName}/category/${e.category}`}>{e.category}</Link>)}
                 </>
             }
 

@@ -82,7 +82,7 @@ const NavResponsive = styled.nav`
         }
 `
 
-export default props => {
+export default  props => {
     const clearSelected = () => {
         let categorias = document.querySelector('#categorias')
         categorias = Array.from(categorias.children)
@@ -97,6 +97,7 @@ export default props => {
             element.classList.remove('selected')
         })
     }
+
     return (
         <>
             <input className='search' type='text' placeholder='O que você procura?' onChange={e => debounce(props.searchFunction, e.target.value, 1000)} ></input>
@@ -105,8 +106,8 @@ export default props => {
                     <div id='content'>
                         <h1>Categorias</h1>
                         <div id='categorias'>
-                            <Link to='/'><h3 onClick={e => { clearSelected(); e.target.classList.add('selected'); props.setCategory(false) }} className='margin selected'>Tudo</h3></Link>
-                            {!!props.tipo && props.tipo.map(tipo => <Link key={tipo} to={tipo}><h3 onClick={e => { clearSelected(); e.target.classList.add('selected'); props.setCategory(tipo) }} className='margin' style={{ textTransform: "capitalize" }}>{tipo}</h3></Link>)}
+                            <Link to={`/${props.storeName}`}><h3 onClick={e => { clearSelected(); e.target.classList.add('selected'); props.setThisCategory(false)}} className='margin selected'>Tudo</h3></Link>
+                            {!!props.tipo && props.tipo.map(tipo => <Link key={tipo.category} to={`/${props.storeName}/category/${tipo.category}`} onClick={() => props.setThisCategory(tipo.category)}><h3 onClick={e => { clearSelected(); e.target.classList.add('selected')}} className='margin' style={{ textTransform: "capitalize" }}>{tipo.category}</h3></Link>)}
                         </div>
                         <h1>Ordenar por</h1>
                         <div id='ordenar'>
@@ -116,11 +117,11 @@ export default props => {
                         </div>
                         <hr />
                         <div className="wrapperSocialMedia">
-                            <a className='whatsIcon'href={process.env.REACT_APP_WHATSMSG}>
-                                <img width='30' height='30' src={whats} alt={process.env.REACT_APP_WHATS} /> <h3>+55 {process.env.REACT_APP_WHATS}</h3>
+                            <a className='whatsIcon' href={props.whatsLink}>
+                                <img width='30' height='30' src={whats} alt={props.whats} /> <h3>+55 {props.whats}</h3>
                             </a>
-                            <a className='insta' href={process.env.REACT_APP_INSTALINK}>
-                                <img width='20' height='20' src={insta} alt={process.env.REACT_APP_INSTATXT} /> <h3>{process.env.REACT_APP_INSTATXT}</h3>
+                            <a className='insta' href={props.instaLink}>
+                                <img width='20' height='20' src={insta} alt={props.insta} /> <h3>{props.insta}</h3>
                             </a>
                         </div>
                         <br /><br />
