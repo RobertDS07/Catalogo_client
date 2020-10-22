@@ -12,6 +12,7 @@ import showErrorMsg from './utils/showErrorMsg'
 import debounce from './utils/debounce';
 
 import Produtos from './components/store/products/Produtos'
+import Home from './components/home/Index'
 import ProdutoSelecionado from './components/store/products/ProdutoSelecionado'
 import Sort from './components/store/header/Sort'
 import Nav from './components/store/header/Nav'
@@ -26,7 +27,7 @@ import Admin from './components/store/adminComponents/Admin'
 
 import whats from './assets/whats.png'
 import arrowUp from './assets/arrowUp.png'
-import Store from './components/store/Main';
+import Store from './components/store/Index.jsx';
 import products from './utils/requestProducts';
 
 export default function () {
@@ -44,23 +45,22 @@ export default function () {
     const [created, setCreated] = useState(false)
 
     useEffect(() => {
-        (async () => {
-            try {
-                const res = await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
-                    query: `
-                {
-                    storeNamesToLink{
-                        storeNameToLink
-                    }
-                }
-                `
-                })
-                setStoreNamesToLink(res.data.data.storeNamesToLink)
-            } catch (e) {
-                console.log(e.response);
-                // return showErrorMsg(e.response.data.errors[0].message)
-            }
-        })()
+        // (async () => {
+        //     try {
+        //         const res = await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
+        //             query: `
+        //         {
+        //             storeNamesToLink{
+        //                 storeNameToLink
+        //             }
+        //         }
+        //         `
+        //         })
+        //         setStoreNamesToLink(res.data.data.storeNamesToLink)
+        //     } catch (e) {
+        //         return showErrorMsg(e.response.data.errors[0].message)
+        //     }
+        // })()
 
         if (!!localStorage.getItem('authorization')) {
             (async () => {
@@ -78,48 +78,16 @@ export default function () {
                 setLogged(true)
             })()
         } 
-
-        // if (!tipo || deleted || created) {
-        //     (async () => {
-        //         const res = await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
-        //             query: `
-        //         {
-        //             categories
-        //         }
-        //         `
-        //         })
-        //         setTipo(res.data.data.categories)
-        //     })()
-        // }
-
-
     }, [])
 
     return (
         <>
             <Switch>
                 <Route exact path="/">
-                    {!!produtos && <Produtos produtos={produtos} />}
+                    <Home />
                 </Route>
 
-                <Route path='/:storeName' component={props => <Store storeName={props.match.params.storeName} match={props.match}/>} /> 
-{/* 
-                {!!tipo && tipo.map(tipo =>
-                    <Route key={tipo} path={'/' + tipo} >
-                        <Produtos produtos={produtos} />
-                    </Route>
-                )} */}
-
-                {/* {!!produtos && produtos.map(e =>
-                    <Route key={e._id} path={'/' + e._id}>
-                        <ProdutoSelecionado _id={e._id} admin={admin} deleted={deleted} setDeleted={setDeleted} />
-                    </Route>
-                )} */}
-
-                <Route exact path='/admin'>
-                    {!!admin && <Redirect to='/' />}
-                    <Admin setAdmin={setAdmin} />
-                </Route>
+                <Route path='/:storeName' component={props => <Store storeName={props.match.params.storeName} match={props.match} logged={logged}/>} /> 
 
                 <Route path='*'>
                     <NotFound />

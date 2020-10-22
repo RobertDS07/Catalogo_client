@@ -120,7 +120,7 @@ export default props => {
             {!!visible &&
                 <div id='modal' onClick={() => setVisible(false)}>
                     <div className='options'>
-                        <p className='p strong' onClick={() => props.setSort(false)}>Categorias</p>
+                        <p className='p strong' onClick={() => props.setSort(false)}>Lançamentos</p>
                         <p className='p' onClick={() => props.setSort('asc')}>Menor preço</p>
                         <p className='p' onClick={() => props.setSort('desc')}>Maior preço</p>
                     </div>

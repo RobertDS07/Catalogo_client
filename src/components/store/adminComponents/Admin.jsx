@@ -33,16 +33,18 @@ export default function (props) {
         const res = await axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
             query: `
                 {
-                    login(email:"${email}", password:"${password}")
+                    login(data:{email:"${email}", password:"${password}"}) {
+                        token
+                    }
                 }
                 `
         })
+console.log(res);
+        localStorage.setItem('authorization', res.data.data.login.token)
 
-        localStorage.setItem('authorization', res.data.data.login)
-
-        return props.setAdmin(true)
+        return props.setLogged(true)
     } catch(e) {
-        return showErrorFunction(e.response.data.errors[0].message, 'error')
+        console.log(e);
     }
 }
     return (

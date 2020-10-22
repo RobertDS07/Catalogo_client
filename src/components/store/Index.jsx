@@ -13,7 +13,7 @@ import Loading from '../utils/Loading'
 import debounce from '../../utils/debounce';
 import whats from '../../assets/whats.png'
 import arrowUp from '../../assets/arrowUp.png'
-import { Link, Route } from 'react-router-dom'
+import { Link, Redirect, Route } from 'react-router-dom'
 import NotFound404 from '../utils/NotFound404'
 import Nav from './header/Nav'
 import ScrollNav from './header/ScollNav'
@@ -21,6 +21,7 @@ import Sort from './header/Sort'
 import NavResponsive from './header/NavResponsive'
 import Produtos from './products/Produtos'
 import ProdutoSelecionado from './products/ProdutoSelecionado'
+import Admin from './adminComponents/Admin'
 
 
 const Store = styled.div`
@@ -184,7 +185,7 @@ export default ({ storeName, match }) => {
                     {admin &&
                         <Modal setAdmin={setAdmin} setCreated={setCreated} />
                     }
-                    <Link to={`/${storeName}`} className='logo'><img alt={storeInfo.insta} src={storeInfo.logoLink} /></Link>
+                    <Link to={`/${storeName}`} style={{ zIndex: 2 }} className='logo'><img alt={storeInfo.insta} src={storeInfo.logoLink} /></Link>
 
                     {!responsive &&
                         <>
@@ -205,8 +206,13 @@ export default ({ storeName, match }) => {
                             <Route exact path={match.url} component={() => <Produtos produtos={produtos.products} storeName={storeInfo.storeNameToLink} />} />
                             <Route path={`${match.url}/category/:category`} component={() => <Produtos produtos={produtos.products} storeName={storeInfo.storeNameToLink} />} />
                             <Route path={`${match.url}/product/:id`} component={props => <ProdutoSelecionado id={props.match.params.id} storeName={storeInfo.storeNameToLink} admin={admin} deleted={deleted} setDeleted={setDeleted} />} />
+                            <Route path={`${match.url}/admin`}>
+                                {!!admin && <Redirect to={`${match.url}`} />}
+                                <Admin setAdmin={setAdmin} />
+                            </Route>
                         </>
                     }
+
                     {responsive && <footer><a href='https://twitter.com/bugextreme1'>Desenvolvido por Robert Damaceno</a></footer>}
                 </>
             }

@@ -111,7 +111,7 @@ export default  props => {
                         </div>
                         <h1>Ordenar por</h1>
                         <div id='ordenar'>
-                            <h3 className='margin selected' onClick={e => { props.setSort(false); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Categorias</h3>
+                            <h3 className='margin selected' onClick={e => { props.setSort(false); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Lançamentos</h3>
                             <h3 className='margin' onClick={e => { props.setSort('asc'); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Menor preço</h3>
                             <h3 className='margin' onClick={e => { props.setSort('desc'); clearSelectedOrdenar(); e.target.classList.add('selected') }}>Maior preço</h3>
                         </div>
