@@ -12,11 +12,11 @@ const GlobalStyles = createGlobalStyle`
     *{
       padding: 0;
       margin: 0;
-      overflow-x: hidden;
       scroll-behavior: smooth;
     }
     body{
       font-family: 'Mulish', sans-serif;
+      overflow-x: hidden;
     }
     input{
       outline: none;

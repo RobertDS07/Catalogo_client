@@ -72,14 +72,14 @@ const Produtos = styled.main`
         flex-shrink: 0;
         border-radius: 10px;
         float: left;
-        animation: ${animation} 1s
+        animation: ${animation} 0.4s
     }
     .container {
         word-wrap: break-word;
         float: right;
         margin-left: 30px;
         margin-top: 10px;
-        animation: ${animationContainer} 1s
+        animation: ${animationContainer} 0.4s
     }
     h3 {
         font-size: 15px;
