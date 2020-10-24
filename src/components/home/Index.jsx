@@ -9,17 +9,26 @@ import Main, { WrapperText, WrapperImg } from './main/Index'
 import Button from './main/Button'
 import Header from './header/Index'
 import Modal from './modal/Index'
+import WrapperModalStoreInfo from './modal/WrapperModalStoreInfo'
 
 const WrapperHome = styled.div`
     width: auto;
     height: auto;
+
+    & a {
+        z-index:0;
+    }
 `
 
 export default () => {
     const [modal, setModal] = useState(false)
     return (
         <>
-            {!!modal && <Modal setModal={setModal} />}
+            {!!modal &&
+                <Modal setModal={setModal}>
+                    <WrapperModalStoreInfo setModal={setModal} />
+                </Modal>
+            }
             <WrapperHome>
                 <Header />
                 <Main>
