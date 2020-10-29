@@ -39,10 +39,9 @@ export default function (props) {
                 }
                 `
         })
-console.log(res);
         localStorage.setItem('authorization', res.data.data.login.token)
 
-        return props.setLogged(true)
+        return props.setAdmin(true)
     } catch(e) {
         console.log(e);
     }

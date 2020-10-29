@@ -32,6 +32,7 @@ const ScrollNav = styled.div`
         text-decoration: none;
         display: inline-block;
         margin-left: 10px;
+        border-bottom: 2px solid transparent;
     }
     a:focus{
         border-bottom: 2px solid black;

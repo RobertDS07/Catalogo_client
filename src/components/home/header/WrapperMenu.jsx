@@ -11,7 +11,8 @@ const WrapperMenu = styled.div`
         background-color: #F1F7FA;
         z-index: 11;
         display: flex;
-        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     &.show {
     right: 0;
     }
@@ -27,10 +28,23 @@ const WrapperMenu = styled.div`
     outline: none;
     }
 
+    .closeModal.arrow {
+        left: 0;
+        right: unset;
+    }
+
     .wrapperMenuItens {
         color: #54526b;
+        min-width: 60%;
         margin: 0;
         margin-top: 20%;
+        text-align: center;
+        display: inline;
+        word-break: keep-all;
+    }
+
+    .wrapperMenuItens hr {
+        margin: 4px 0 4px;
     }
 `
 

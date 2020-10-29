@@ -41,7 +41,7 @@ const Circle = styled.div`
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background-color: #00FFFF;
+        background-color: #9994f3;
         font-size: 27px;
         font-weight: bold;
         text-align: center;
@@ -58,12 +58,11 @@ const Circle = styled.div`
 
 export default props => {
     const [visible, setVisible] = useState(false)
-
     const createProduct = async e => {
         e.preventDefault()
         const button = document.querySelector('#submit')
 
-        button.disable = true
+        button.disabled = true
 
         const data = CatchInputsData(e)
 
@@ -83,7 +82,7 @@ export default props => {
             const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
                     mutation{
-                        createProduct(token:"${window.localStorage.getItem('authorization')}" data:{${dataArray.map(e => e)}})
+                        createProduct(token:"${window.localStorage.getItem('authorization')}" storeName:"${props.storeName}" data:{${dataArray.map(e => e)}})
                     }
                     `
             })
@@ -93,7 +92,7 @@ export default props => {
                 props.setCreated(true)
             }
         } catch (e) {
-            button.disable = false
+            button.disabled = false
             return showErrorFunction(e.response.data.errors[0].message, 'error')
         }
     }

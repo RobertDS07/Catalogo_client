@@ -77,23 +77,6 @@ export default () => {
     const [modal, setModal] = useState(false)
     const [stores, setStores] = useState()
     const [options, setOptions] = useState()
-    
-    const newMenu = {
-        'lojas': () =>
-            <WrapperMenu>
-                <button className='closeModal' onClick={() => setModal(false)}>X</button>
-                {!!stores && stores.map((e, index) => {
-                    if (stores.length - 1 === index) return <Link to={e.storeNameToLink}><p>{e.storeNameToLink}</p></Link>
-
-                    return (
-                        <>
-                            <Link to={e.storeNameToLink}><p>{e.storeNameToLink}</p></Link>
-                            <hr />
-                        </>
-                    )
-                })}
-            </WrapperMenu>
-    }
 
     useEffect(() => {
         if (!stores) (async () => {
@@ -110,6 +93,25 @@ export default () => {
             setStores(res.data.data.storeNamesToLink)
         })()
     })
+
+    const newMenu = {
+        'lojas': () =>
+            <WrapperMenu>
+                <button className='closeModal arrow' onClick={() => setOptions(false)}>&#8592;</button>
+                <div className="wrapperMenuItens">
+                    {!!stores && stores.map((e, index) => {
+                        if (stores.length - 1 === index) return <Link to={e.storeNameToLink}><p>{e.storeNameToLink}</p></Link>
+
+                        return (
+                            <>
+                                <Link to={e.storeNameToLink}><p>{e.storeNameToLink}</p></Link>
+                                <hr />
+                            </>
+                        )
+                    })}
+                </div>
+            </WrapperMenu>
+    }
 
     window.addEventListener('resize', () => window.innerWidth < 760 ? setMobile(true) : setMobile(false))
     return (
@@ -133,7 +135,6 @@ export default () => {
                         </div>
                     </div>
                 }
-
 
                 {!modal && !!options && setOptions()}
                 {modal && <Modal setModal={setModal} />}

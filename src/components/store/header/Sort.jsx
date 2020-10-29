@@ -90,29 +90,19 @@ const Sort = styled.div`
 export default props => {
     const [visible, setVisible] = useState(false)
 
-    function fixSort() {
+    window.addEventListener('scroll', () => {
+        if (window.innerWidth > 1400 || !document.querySelector('.sort')) return false
+
         let sort = document.querySelectorAll('.sort')
-        window.pageYOffset >= sort[0].offsetTop ? sort[0].classList.add('fixedRight') : sort[0].classList.remove('fixedRight')
-        window.pageYOffset >= sort[0].offsetTop ? sort[1].classList.add('fixed') : sort[1].classList.remove('fixed')
-    }
-    
-    window.addEventListener('load', () => {
-        if (window.innerWidth < 1400) {
-            window.addEventListener('scroll', fixSort)
-        }
-    })
-    window.addEventListener('resize', () => {
-        if (window.innerWidth < 1400) {
-            window.addEventListener('scroll', fixSort)
-        } else {
-            window.removeEventListener('scroll', fixSort)
-        }
+
+        window.pageYOffset >= sort[0].offsetTop +100 ? sort[0].classList.add('fixedRight') : sort[0].classList.remove('fixedRight')
+        window.pageYOffset >= sort[0].offsetTop +100 ? sort[1].classList.add('fixed') : sort[1].classList.remove('fixed')
     })
 
     return (
         <Sort>
             <div className='sort left'>
-                <p className='bold' style={{textTransform:"capitalize"}}>Tudo</p>
+                <p className='bold' style={{ textTransform: "capitalize" }}>Tudo</p>
             </div>
             <div className='sort' onClick={() => setVisible(true)}>
                 <p>Ordenar por</p>

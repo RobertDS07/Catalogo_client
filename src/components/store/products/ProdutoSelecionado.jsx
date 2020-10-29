@@ -75,6 +75,9 @@ export default props => {
     const updateProduct = async (e) => {
         e.preventDefault()
 
+        const button = e.target.lastChild
+        button.disabled = true
+
         const data = CatchInputsData(e)
 
         const dataArray = []
@@ -91,16 +94,17 @@ export default props => {
             const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
                     mutation{
-                        updateProduct(token:"${localStorage.getItem('authorization')}" storeName:"${props.storeName}" id:"${props.id}" data:{${dataArray.map(e => e)}})
+                        updateProduct(token:"${localStorage.getItem('authorization')}" storeName:"${props.storeName}" id:${props.id} data:{${dataArray.map(e => e)}})
                     }
                     `
             })
 
-            if (res.data.data.updateProduct){
+            if (res.data.data.updateProduct) {
                 showErrorFunction('Produto modoficado com sucesso', 'success')
-                return props.setDeleted(true)  
-            } 
+                return props.setDeleted(true)
+            }
         } catch (e) {
+            button.disabled = false
             return showErrorFunction(e.response.data.errors[0].message)
         }
     }
@@ -110,7 +114,7 @@ export default props => {
             const res = await Axios.post(process.env.REACT_APP_API || 'http://localhost:8081/graphql', {
                 query: `
                     mutation{
-                        deleteProduct(token:"${localStorage.getItem('authorization')}" storeName:"${props.storeName}" id:"${props.id}")
+                        deleteProduct(token:"${localStorage.getItem('authorization')}" storeName:"${props.storeName}" id:${props.id})
                     }
                     `
             })

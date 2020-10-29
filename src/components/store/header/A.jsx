@@ -17,6 +17,7 @@ const A = styled.div`
         height: 2px;
         margin-top: auto;
         a{
+            visibility: hidden;
             color: #E4E6E8;
         }
     }
