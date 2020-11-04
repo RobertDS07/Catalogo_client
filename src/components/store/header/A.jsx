@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const A = styled.div`
     width: 100%;
-    background-color: #E4E6E8;
+    background-color: #e4e6e8;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -12,16 +12,19 @@ const A = styled.div`
         color: grey;
         text-decoration: none;
     }
-    @media(min-width: 1400px){
+    @media (min-width: 1400px) {
         grid-area: cabeçalho;
         height: 2px;
         margin-top: auto;
-        a{
+        a {
             visibility: hidden;
-            color: #E4E6E8;
+            color: #e4e6e8;
         }
     }
 `
 
-export default props =>
-    <A><a href={props.link}>{props.txt}</a></A>
+export default (props) => (
+    <A>
+        <a href={props.link}>{props.txt}</a>
+    </A>
+)

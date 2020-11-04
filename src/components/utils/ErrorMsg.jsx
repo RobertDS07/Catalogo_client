@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, {keyframes} from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 const animation = keyframes`
     0%{
@@ -13,13 +13,13 @@ const animation = keyframes`
     }
 `
 
-const Error = styled.div `
-    background: #1F1F1F;
-    background: rgba(0,0,0,.9);
+const Error = styled.div`
+    background: #1f1f1f;
+    background: rgba(0, 0, 0, 0.9);
     padding: 15px;
     border-radius: 15px;
-    color: #FFF;
-    text-shadow: -1px -1px 0 rgba(0,0,0,.5);
+    color: #fff;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
     width: 200px;
     height: auto;
     line-break: auto;
@@ -28,20 +28,19 @@ const Error = styled.div `
     z-index: 4;
     text-align: center;
     display: none;
-    &.show{
+    &.show {
         display: inline;
         left: -500px;
         animation: ${animation} 4s;
     }
-    &.error{
-        background: #FE1A00;
-        background: rgba(254,26,0,.9);
+    &.error {
+        background: #fe1a00;
+        background: rgba(254, 26, 0, 0.9);
     }
-    &.success{
-        background: #17980E;
-        background: rgba(92,184,17,.9);
+    &.success {
+        background: #17980e;
+        background: rgba(92, 184, 17, 0.9);
     }
 `
 
-export default () => 
-    <Error className='message'></Error>
+export default () => <Error className="message" />

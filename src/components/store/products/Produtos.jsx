@@ -32,59 +32,59 @@ const Produtos = styled.main`
         margin: 10px 10px 10px 10px;
         border-radius: 5px;
     }
-    a:hover{
-        outline: 1px solid (211,211,211, 0.5);
-        box-shadow: 0 2px 10px #D3D3D3;
+    a:hover {
+        outline: 1px solid (211, 211, 211, 0.5);
+        box-shadow: 0 2px 10px #d3d3d3;
     }
-    a:hover img{
+    a:hover img {
         filter: grayscale(40%);
     }
 
-@media(max-width: 500px){
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-@media(min-width: 501px){
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .catchContent{
-        width: 800px;
-        height: auto;
+    @media (max-width: 500px) {
+        width: 100%;
+        height: 100%;
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
         justify-content: center;
+        align-items: center;
     }
-}
-@media(min-width: 1400px) {
-    width: 106%;
-    grid-area: main;
-    display: inline-block;
-    .catchContent{
-        width: auto;
-        height: auto;
+    @media (min-width: 501px) {
+        width: 100%;
+        height: 100%;
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
+        justify-content: center;
+        align-items: center;
+
+        .catchContent {
+            width: 800px;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
     }
-}
+    @media (min-width: 1400px) {
+        width: 106%;
+        grid-area: main;
+        display: inline-block;
+        .catchContent {
+            width: auto;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+    }
 `
 
 const Content = styled.div`
-        word-wrap: break-word;
-        float: right;
-        margin: 10px;
-        width: 320px;
-        display: flex;
-        animation: ${animationContainer} ${props => props.delay * 13 + 'ms'};
+    word-wrap: break-word;
+    float: right;
+    margin: 10px;
+    width: 320px;
+    display: flex;
+    animation: ${animationContainer} ${(props) => `${props.delay * 13}ms`};
     & img {
         flex-shrink: 0;
         border-radius: 10px;
@@ -93,10 +93,11 @@ const Content = styled.div`
 
     @media (max-width: 719px) {
         margin-left: unset;
+        float: unset;
         width: 400px;
 
         & img {
-            margin-right:30px;
+            margin-right: 30px;
         }
     }
     @media (max-width: 405px) {
@@ -104,7 +105,7 @@ const Content = styled.div`
         width: 390px;
 
         & img {
-            margin-right:30px;
+            margin-right: 30px;
         }
     }
     @media (max-width: 376px) {
@@ -112,7 +113,7 @@ const Content = styled.div`
         width: 370px;
 
         & img {
-            margin-right:30px;
+            margin-right: 30px;
         }
     }
     @media (max-width: 321px) {
@@ -120,26 +121,41 @@ const Content = styled.div`
         width: 315px;
 
         & img {
-            margin-right:30px;
+            margin-right: 30px;
         }
     }
 `
 
-export default props => {
+export default (props) => {
     return (
         <Produtos>
-            <div className='catchContent'>
-                {!!props.produtos && props.produtos.map((e, index) =>
-                    <Link key={e.id} to={`/${props.storeName}/product/${e.id}`}>
-                        <Content delay={index}>
-                            <img width='130' height='173' loading='lazy' alt={e.name} src={e.fotourl} className='productImg'></img>
-                            <div className='container' onScroll={() => console.log('oi')}>
-                                <h3 style={{ textTransform: "uppercase" }}>{e.name}</h3><br />
-                                <h5>{formatter.format(e.price)}</h5>
-                            </div>
-                        </Content>
-                    </Link>
-                )}
+            <div className="catchContent">
+                {!!props.produtos &&
+                    props.produtos.map((e, index) => (
+                        <Link
+                            key={e.id}
+                            to={`/${props.storeName}/product/${e.id}`}
+                        >
+                            <Content delay={index}>
+                                <img
+                                    width="130"
+                                    height="173"
+                                    loading="lazy"
+                                    alt={e.name}
+                                    src={e.fotourl}
+                                    className="productImg"
+                                />
+                                <div className="container">
+                                    <h3 style={{ textTransform: 'uppercase' }}>
+                                        {e.name}
+                                    </h3>
+
+                                    <br />
+                                    <h5>{formatter.format(e.price)}</h5>
+                                </div>
+                            </Content>
+                        </Link>
+                    ))}
             </div>
         </Produtos>
     )

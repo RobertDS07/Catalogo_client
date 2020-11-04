@@ -12,19 +12,26 @@ const DevInput = styled.section`
 export default ({ storeName, createFunction, inputs }) => {
     return (
         <DevInput>
-            <form onSubmit={e => createFunction(e)}>
+            <form onSubmit={(e) => createFunction(e)}>
                 <label htmlFor="storeName">storeName</label>
-                <input type="text" name="storeNameToLink" id="storeNameToLink" value={storeName} readOnly />
+                <input
+                    type="text"
+                    name="storeNameToLink"
+                    id="storeNameToLink"
+                    value={storeName}
+                    readOnly
+                />
 
                 <label htmlFor="auth">Auth</label>
-                <input type="password" name="auth" id="auth"/>
+                <input type="password" name="auth" id="auth" />
 
-                {!!inputs && inputs.map(e =>
-                    <>
-                        <label htmlFor={e}>{e}</label>
-                        <input type="text" name={e} id={e}/>
-                    </>
-                )}
+                {!!inputs &&
+                    inputs.map((e) => (
+                        <>
+                            <label htmlFor={e}>{e}</label>
+                            <input type="text" name={e} id={e} />
+                        </>
+                    ))}
 
                 <input type="submit" value="Criar" />
             </form>

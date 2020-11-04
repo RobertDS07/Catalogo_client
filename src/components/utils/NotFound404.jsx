@@ -7,7 +7,7 @@ const NotFound = styled.div`
     grid-area: main;
     display: flex;
     justify-content: center;
-    .wrapper{
+    .wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -17,12 +17,16 @@ const NotFound = styled.div`
     }
 `
 
-export default () => 
+export default () => (
     <NotFound>
         <div className="wrapper">
-            <img src={notfound} alt="404 NOT FOUND" width='200' height='200'/>
+            <img src={notfound} alt="404 NOT FOUND" width="200" height="200" />
             <h1>Link não encontrado (404 error)</h1>
-            <br/>
-            <p>Se você acha que o que esta procurando realmente deveria estar aqui, por favor fale com o dono do site.</p>
+            <br />
+            <p>
+                Se você acha que o que esta procurando realmente deveria estar
+                aqui, por favor fale com o dono do site.
+            </p>
         </div>
     </NotFound>
+)

@@ -1,18 +1,15 @@
-import React from 'react';
-import {
-    Route,
-    Switch
-} from "react-router-dom";
+import React from 'react'
+import { Route, Switch } from 'react-router-dom'
 
 import Home from './components/home/Index'
 
 import NotFound from './components/utils/NotFound404'
 
-import Store from './components/store/Index.jsx';
+import Store from './components/store/Index'
 
 import DevRoute from './components/store/devComponents/Wrapper'
 
-export default function () {
+export default () => (
     // const [logged, setLogged] = useState()
 
     // useEffect(() => {
@@ -31,25 +28,33 @@ export default function () {
 
     //             setLogged(true)
     //         })()
-    //     } 
+    //     }
     // }, [])
 
-    return (
-        <>
-            <Switch>
-                <Route exact path="/">
-                    <Home />
-                </Route>
+    <>
+        <Switch>
+            <Route exact path="/">
+                <Home />
+            </Route>
 
-                <Route exact path='/:storeName/create' component={props => <DevRoute storeNameToLink={props.match.params.storeName}/>}/>
-                
-                <Route path='/:storeName' component={props => <Store storeName={props.match.params.storeName} />} /> 
+            <Route
+                exact
+                path="/:storeName/create"
+                component={(props) => (
+                    <DevRoute storeNameToLink={props.match.params.storeName} />
+                )}
+            />
 
-                <Route path='*'>
-                    <NotFound />
-                </Route>
-            </Switch>
+            <Route
+                path="/:storeName"
+                component={(props) => (
+                    <Store storeName={props.match.params.storeName} />
+                )}
+            />
 
-        </>
-    )
-}
+            <Route path="*">
+                <NotFound />
+            </Route>
+        </Switch>
+    </>
+)

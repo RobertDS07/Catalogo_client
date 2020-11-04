@@ -1,7 +1,7 @@
 let timer
 
 const debounce = (fn, args, delay) => {
-    if (!!timer) {
+    if (timer) {
         clearTimeout(timer)
     }
 

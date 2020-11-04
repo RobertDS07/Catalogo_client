@@ -16,7 +16,9 @@ const Header = styled.header`
 export default () => {
     return (
         <Header>
-            <Link to='/'><img src={logo} alt="logo" /></Link>
+            <Link to="/">
+                <img src={logo} alt="logo" />
+            </Link>
             <Options />
         </Header>
     )

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { createGlobalStyle } from 'styled-components'
 import { BrowserRouter as Router } from 'react-router-dom'
 
@@ -6,7 +6,7 @@ import Routes from './routes'
 
 import Msg from './components/utils/ErrorMsg'
 
-import search from '../src/assets/search.png'
+import search from './assets/search.png'
 
 const GlobalStyles = createGlobalStyle`
     *{
@@ -67,15 +67,15 @@ const GlobalStyles = createGlobalStyle`
 `
 
 function App() {
-  return (
-    <>
-      <GlobalStyles />
+    return (
+        <>
+            <GlobalStyles />
 
-      <Msg />
-      <Router>
-        <Routes />
-      </Router>
-    </>
-  );
+            <Msg />
+            <Router>
+                <Routes />
+            </Router>
+        </>
+    )
 }
-export default App;
+export default App

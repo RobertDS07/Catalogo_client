@@ -14,7 +14,8 @@ const Loading = styled.div`
     z-index: 3;
 `
 
-export default () => 
+export default () => (
     <Loading>
-        <img src={loading} alt='loading' />
+        <img src={loading} alt="loading" />
     </Loading>
+)
