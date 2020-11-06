@@ -13,7 +13,7 @@ export default ({ storeName, createFunction, inputs }) => {
     return (
         <DevInput>
             <form onSubmit={(e) => createFunction(e)}>
-                <label htmlFor="storeName">storeName</label>
+                <label htmlFor="storeNameToLink">storeName</label>
                 <input
                     type="text"
                     name="storeNameToLink"
@@ -29,7 +29,11 @@ export default ({ storeName, createFunction, inputs }) => {
                     inputs.map((e) => (
                         <>
                             <label htmlFor={e}>{e}</label>
-                            <input type="text" name={e} id={e} />
+                            {e === 'password' ? (
+                                <input type="password" name={e} id={e} />
+                            ) : (
+                                <input type="text" name={e} id={e} />
+                            )}
                         </>
                     ))}
 

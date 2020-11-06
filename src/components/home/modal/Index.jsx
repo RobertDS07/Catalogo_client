@@ -16,7 +16,10 @@ const Modal = styled.div`
 
 export default ({ setModal, children }) => {
     return (
-        <Modal id='Modal' onClick={e => e.target.id === 'Modal' && setModal(false)}>
+        <Modal
+            id="Modal"
+            onClick={(e) => e.target.id === 'Modal' && setModal(false)}
+        >
             {children}
         </Modal>
     )
