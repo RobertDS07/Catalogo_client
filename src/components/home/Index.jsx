@@ -36,7 +36,7 @@ export default () => {
                         <h1>
                             Torne seu negócio
                             <span> mais profissional</span> por menos de
-                            <span>6 reais por mês.</span>
+                            <span> 6 reais por mês.</span>
                         </h1>
                         <a href="https://wa.link/umzspt">
                             <Button>Eu quero!</Button>
