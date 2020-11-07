@@ -191,10 +191,7 @@ export default (props) => {
                                     src={whats}
                                     alt={props.whats}
                                 />
-                                <h3>
-                                    +55
-                                    {props.whats}
-                                </h3>
+                                <h3>+55 {props.whats.trim()}</h3>
                             </a>
                             <a className="insta" href={props.instaLink}>
                                 <img
